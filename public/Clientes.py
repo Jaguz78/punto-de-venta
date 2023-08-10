@@ -1,6 +1,8 @@
 import tkinter as tk
 
-def FormClientes():
-    root = tk.Tk()
-    root.geometry("400x200")
-    root.title("CLIENTES")
+class ClientesForm(tk.Frame):
+    def __init__(self, root):
+        super().__init__(root)
+        
+        self.label = tk.Label(self, text="CLIENTES", font=("Helvetica", 20))
+        self.label.pack(padx=20, pady=20)
