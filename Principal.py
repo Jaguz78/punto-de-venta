@@ -1,16 +1,20 @@
+# Views
 from tkinter import *
-from Ayuda import *
-from Cambio_Clave import *
-from Cambio_Usuario import *
-from Clientes import *
-from Nueva_Factura import *
-from Productos import *
-from Reporte_Facturas import *
-from Usuarios import *
+from pages.Ayuda import *
+from pages.Cambio_Clave import *
+from pages.Cambio_Usuario import *
+from pages.Clientes import *
+from pages.Nueva_Factura import *
+from pages.Productos import *
+from pages.Reporte_Facturas import *
+from pages.Usuarios import *
+from pages.Login import *
+from controllers.session import UserSession
 
 class App:
-    def __init__(self, ventana):
+    def __init__(self, ventana, userSession):
         self.ventana = ventana
+        self.userSession = userSession
         self.ventana.title("SISTEMA DE FACTURACIÓN")
         self.ventana.geometry("900x600")
 
@@ -47,10 +51,12 @@ class App:
 
     def mostrar_contenido(self, frame_class):
         self.frame2.destroy()
-        self.frame2 = frame_class(self.ventana)
+        self.frame2 = frame_class(self.ventana, self.userSession)
         self.frame2.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
 if __name__ == "__main__":
+    userSession = UserSession()
     ventana = tk.Tk()
-    app = App(ventana)
+    app = App(ventana, userSession)
+    app.mostrar_contenido(LoginPanel)
     ventana.mainloop()
