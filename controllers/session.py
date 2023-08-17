@@ -9,17 +9,21 @@ class UserSession:
             cls._instance.username = None
             cls._instance.password = None
             cls._instance.role = None
+            cls._instance.logged_in = False
         return cls._instance
+    
+    def is_logged_in(self):
+        return self.logged_in
 
     def login(self, username, password):
         users = getUsers()
-        print(username, password)
         for user in users:
             print(user['name'], user['password'])
             if user['name'] == username and user['password'] == password:
                 self.username = username
                 self.password = password
                 self.role = user['role']
+                self.logged_in = True
                 success = {"success": "Login exitoso"}
                 return success
         error = {"error": "Credenciales incorrectas"}
@@ -29,6 +33,7 @@ class UserSession:
         self.username = None
         self.password = None
         self.role = None
+        self.logged_in = False
 
     def get_username(self):
         return self.username

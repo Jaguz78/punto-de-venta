@@ -24,18 +24,20 @@ class App:
         menu_principal = Menu(self.frame1)
 
         menu_archivo = Menu(menu_principal, tearoff=0)
-        menu_archivo.add_command(label="Usuarios", command=lambda: self.mostrar_contenido(UsuariosForm))
         menu_archivo.add_command(label="Clientes", command=lambda: self.mostrar_contenido(ClientesForm))
         menu_archivo.add_command(label="Productos", command=lambda: self.mostrar_contenido(ProductosForm))
         menu_archivo.add_separator()
-        menu_archivo.add_command(label="Cambio Clave", command=lambda: self.mostrar_contenido(CambioClaveForm))
-        menu_archivo.add_command(label="Cambio Usuario", command=lambda: self.mostrar_contenido(CambioUsuarioForm))
-        menu_archivo.add_separator()
+        if self.userSession.get_role() == 'admin':
+            menu_archivo.add_command(label="Usuarios", command=lambda: self.mostrar_contenido(UsuariosForm))
+            menu_archivo.add_command(label="Cambio Clave", command=lambda: self.mostrar_contenido(CambioClaveForm))
+            menu_archivo.add_command(label="Cambio Usuario", command=lambda: self.mostrar_contenido(CambioUsuarioForm))
+            menu_archivo.add_separator()
         menu_archivo.add_command(label="Salir", command=ventana.quit)
 
         menu_movimientos = Menu(menu_principal, tearoff=0)
         menu_movimientos.add_command(label="Nueva Factura", command=lambda: self.mostrar_contenido(NuevaFacturaForm))
-        menu_movimientos.add_command(label="Reporte Facturas", command=lambda: self.mostrar_contenido(ReporteFacturasForm))
+        if self.userSession.get_role() == 'admin':
+            menu_movimientos.add_command(label="Reporte Facturas", command=lambda: self.mostrar_contenido(ReporteFacturasForm))
 
         menu_ayuda = Menu(menu_principal, tearoff=0)
         menu_ayuda.add_command(label="Acerca de", command=lambda: self.mostrar_contenido(AyudaForm))
@@ -57,6 +59,6 @@ class App:
 if __name__ == "__main__":
     userSession = UserSession()
     ventana = tk.Tk()
-    app = App(ventana, userSession)
-    app.mostrar_contenido(LoginPanel)
+    login = LoginWindow(ventana, userSession)
+    login.mostrar_contenido(LoginPanel)
     ventana.mainloop()
