@@ -1,0 +1,16 @@
+[
+    {
+        "id": "1",
+        "nombre": "Leche LALA",
+        "precio": "30",
+        "iva": "12%",
+        "nota": "Leche entera liquida"
+    },
+    {
+        "id": "2",
+        "nombre": "Jamon Fud",
+        "precio": "12",
+        "iva": "5%",
+        "nota": "Jamon de pavo"
+    }
+]

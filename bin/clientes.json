@@ -1,0 +1,24 @@
+[
+    {
+        "id": "2",
+        "identificacion": "DPI",
+        "nombres": "Anthony",
+        "apellidos": "Gonzalez",
+        "direccion": "Carchaa",
+        "telefono": "222",
+        "ciudad": "Carcha",
+        "nacimiento": "",
+        "ingreso": ""
+    },
+    {
+        "id": "1",
+        "identificacion": "Pasaporte",
+        "nombres": "Edgar",
+        "apellidos": "Gonzalez",
+        "direccion": "Coban",
+        "telefono": "111",
+        "ciudad": "Coban",
+        "nacimiento": "1/8/23",
+        "ingreso": "17/8/23"
+    }
+]
