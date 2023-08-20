@@ -16,9 +16,11 @@ class LoginWindow:
         self.frame2 = tk.Frame(ventana)
         self.frame2.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
-    def mostrar_contenido(self, frame_class):
+        self.mostrar_contenido()
+
+    def mostrar_contenido(self):
         self.frame2.destroy()
-        self.frame2 = frame_class(self.ventana, self.userSession)
+        self.frame2 = LoginPanel(self.ventana, self.userSession)
         self.frame2.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
 

@@ -1,3 +1,4 @@
+import tkinter as tk
 from controllers.users import *
 
 class UserSession:
@@ -33,7 +34,7 @@ class UserSession:
         self.password = None
         self.role = None
         self.logged_in = False
-
+        
     def get_username(self):
         return self.username
     
@@ -43,14 +44,14 @@ class UserSession:
     def get_role(self):
         return self.role
     
-    def changePassword(self, name, oldPass, newPass, confirmNewPass):
+    def changePassword(self, id, oldPass, newPass, confirmNewPass):
         users = getUsers()
-        user = self.login(name, oldPass)
+        user = self.login(id, oldPass)
 
         if 'error' not in user:
             if newPass == confirmNewPass:
                 for u in users:
-                    if u['name'] == user['name']:
+                    if u['id'] == id:
                         u['password'] = newPass
                         with open(ARCH_USERS, 'w') as archive:
                             json.dump(users, archive, indent=4)

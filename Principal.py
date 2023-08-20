@@ -30,7 +30,7 @@ class App:
         if self.userSession.get_role() == 'admin':
             menu_archivo.add_command(label="Usuarios", command=lambda: self.mostrar_contenido(UsuariosForm))
             menu_archivo.add_command(label="Cambio Clave", command=lambda: self.mostrar_contenido(CambioClaveForm))
-            menu_archivo.add_command(label="Cambio Usuario", command=lambda: self.mostrar_contenido(CambioUsuarioForm))
+            menu_archivo.add_command(label="Cambio Usuario", command=lambda: print())
             menu_archivo.add_separator()
         menu_archivo.add_command(label="Salir", command=ventana.quit)
 
@@ -60,5 +60,4 @@ if __name__ == "__main__":
     userSession = UserSession()
     ventana = tk.Tk()
     login = LoginWindow(ventana, userSession)
-    login.mostrar_contenido(LoginPanel)
     ventana.mainloop()
