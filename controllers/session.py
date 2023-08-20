@@ -18,8 +18,7 @@ class UserSession:
     def login(self, username, password):
         users = getUsers()
         for user in users:
-            print(user['name'], user['password'])
-            if user['name'] == username and user['password'] == password:
+            if user['id'] == username and user['password'] == password:
                 self.username = username
                 self.password = password
                 self.role = user['role']

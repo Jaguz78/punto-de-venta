@@ -1,22 +1,16 @@
 [
     {
+        "id": "admin",
         "name": "admin",
+        "lastname": "",
         "password": "1234",
         "role": "admin"
     },
     {
-        "name": "sech",
-        "password": "bimbo",
-        "role": "admin"
-    },
-    {
-        "name": "Jose",
-        "password": "vinland",
-        "role": "usuario"
-    },
-    {
-        "name": "Ale",
-        "password": "tibursio",
+        "id": "jaguz",
+        "name": "Jos\u00e9",
+        "lastname": "Guzm\u00e1n",
+        "password": "j",
         "role": "admin"
     }
 ]

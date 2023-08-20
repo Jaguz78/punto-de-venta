@@ -3,27 +3,55 @@ import os
 
 ARCH_USERS = os.path.join(os.path.dirname(__file__), '../bin/users.json')
 
-def createUser(name, password, role):
+def getUsers():
+    with open(ARCH_USERS, 'r') as archive:
+        users = json.load(archive)
+    return users
+
+def createUser(id, name, lastname, password, confirm, role):
     users = getUsers()
     
     for user in users:
-        if user['name'] == name:
-            errorMessage = {"error": "El nombre de usuario seleccionado ya existe"}
+        if user['id'] == id:
+            errorMessage = {"error": "El id de usuario seleccionado ya existe"}
             return errorMessage
-    else:
-        newUser = {
-            'name': name,
-            'password': password,
-            'role': role
-        }
-        users.append(newUser)
+        elif password == confirm:
+            newUser = {
+                'id': id,
+                'name': name,
+                'lastname': lastname or "",
+                'password': password,
+                'role': role
+            }
+            users.append(newUser)
 
         with open(ARCH_USERS, 'w') as archive:
             json.dump(users, archive, indent=4)
         response = {"success": "El Usuario fue creado exitosamente"}
         return response
+    
+def deleteUser(id):
+    users = getUsers()
+    for user in users:
+        if user['id'] == id:
+            users.remove(user)
+            with open(ARCH_USERS, 'w') as archive:
+                json.dump(users, archive, indent=4)
+            return {"success": "El Usuario fue eliminado exitosamente"}
+                
+    return {"Error": "No se encontro un usuario con ese ID"}
 
-def getUsers():
-    with open(ARCH_USERS, 'r') as archive:
-        users = json.load(archive)
-    return users
+def editUser(id, name, lastname, role):
+    users = getUsers()
+    
+    for user in users:
+        if user['id'] == id:
+            user['id'] = id
+            user['name'] = name
+            user['lastname'] = lastname
+            user['role'] = role
+
+            with open(ARCH_USERS, 'w') as archive:
+                json.dump(users, archive, indent=4)
+            return {"success": "El Usuario fue editado exitosamente"}
+    return {"Error": "No existe un usuario con ese ID"}

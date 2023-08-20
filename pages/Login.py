@@ -1,6 +1,7 @@
 import tkinter as tk
 from Principal import App
 from .Ayuda import AyudaForm
+from tkinter import messagebox
 
 class LoginWindow:
     def __init__(self, ventana, userSession):
@@ -27,7 +28,7 @@ class LoginPanel(tk.Frame):
         self.userSession = userSession
         self.parent =  parent
         
-        self.label_username = tk.Label(self, text="Usuario:")
+        self.label_username = tk.Label(self, text="ID Usuario:")
         self.label_password = tk.Label(self, text="Contraseña:")
         
         self.entry_username = tk.Entry(self)
@@ -44,9 +45,11 @@ class LoginPanel(tk.Frame):
         self.pack()
 
     def login2(self):
-        self.userSession.login(self.entry_username.get(), self.entry_password.get())
+        res = self.userSession.login(self.entry_username.get(), self.entry_password.get())
         if self.userSession.is_logged_in():
             self.openMainWindow()
+        else:
+            messagebox.showerror("Error", res["error"])
 
     def openMainWindow(self):
         if self.userSession.is_logged_in():
