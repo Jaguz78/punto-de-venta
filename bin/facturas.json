@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "fecha": "8/21/23",
+        "cliente": "Anthony",
+        "productos": [
+            [
+                "Leche LALA",
+                "3"
+            ]
+        ],
+        "total": 90.0
+    },
+    {
+        "id": 2,
+        "fecha": "8/21/23",
+        "cliente": "Anthony",
+        "productos": [
+            [
+                "Leche LALA",
+                "11"
+            ],
+            [
+                "Jamon Fud",
+                "2"
+            ]
+        ],
+        "total": 354.0
+    }
+]

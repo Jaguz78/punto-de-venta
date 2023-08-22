@@ -105,6 +105,7 @@ class UsuariosForm(tk.Frame):
 
     def setTable(self):
         users = getUsers()
+        self.user_table.delete(*self.user_table.get_children())
         for u in users:
             row = (u['id'], u['name'], u['lastname'], u['role'])
             self.user_table.insert("", "end", values=row)
