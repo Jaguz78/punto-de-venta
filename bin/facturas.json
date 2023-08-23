@@ -26,5 +26,21 @@
             ]
         ],
         "total": 354.0
+    },
+    {
+        "id": 3,
+        "fecha": "8/22/23",
+        "cliente": "Anthony",
+        "productos": [
+            [
+                "Leche LALA",
+                "1"
+            ],
+            [
+                "Jamon Fud",
+                "1"
+            ]
+        ],
+        "total": 42.0
     }
 ]

@@ -23,6 +23,7 @@ class NuevaFacturaForm(tk.Frame):
         self.productos = self.fillProductos()
         
         self.crear_vista()
+        self.delete_this_product = None
 
     def fillClientes(self):
         clientes = getClientes()
@@ -61,9 +62,8 @@ class NuevaFacturaForm(tk.Frame):
 
         tk.Button(self, text="Agregar", command=self.agregar).grid(row=8, column=1)
         tk.Button(self, text="Guardar", command=self.guardar).grid(row=8, column=2)
-        tk.Button(self, text="Editar", command=self.editar).grid(row=8, column=3)
-        tk.Button(self, text="Eliminar", command=self.eliminar).grid(row=8, column=4)
-        tk.Button(self, text="Limpiar", command=self.limpiar).grid(row=8, column=5)
+        tk.Button(self, text="Eliminar", command=self.eliminar).grid(row=8, column=3)
+        tk.Button(self, text="Limpiar", command=self.limpiar).grid(row=8, column=4)
 
         tk.Label(self, text=" ", height=1).grid(row=9)
 
@@ -82,7 +82,11 @@ class NuevaFacturaForm(tk.Frame):
 
         self.tabla.bind("<ButtonRelease-1>", self.buscar)
 
-        self.total_label = tk.Label(self, text="Total:").grid(row=12, column=3, sticky="e")
+        self.total_label = tk.Label(self, text="Total:")
+        self.total_label.grid(row=12, column=3, sticky="e")
+
+        # Evento para buscar usuario en la tabla
+        self.tabla.bind("<ButtonRelease-1>", self.buscar)
     
     def agregar(self):
         producto = self.producto.get()
@@ -93,40 +97,20 @@ class NuevaFacturaForm(tk.Frame):
             if p['nombre'] == producto:
                 row = (p['id'], p['nombre'], p['precio'], cantidad, float(p['precio']) * int(cantidad))
                 self.tabla.insert("", "end", values=row)
+                self.updateTotal()
 
 
     def buscar(self, event):
-        # item = self.tabla.selection()[0]
-        # values = self.tabla.item(item, "values")
-        # if values:
-        #     self.id_producto.set(values[0])
-        #     self.nombre.set(values[1])
-        #     self.precio.set(values[2])
-        #     self.iva.set(values[3])
-        #     self.nota.set(values[4])
-        pass
-
-    def editar(self):
-        # id = self.id_producto.get()
-        # nombre = self.nombre.get()
-        # precio = self.precio.get()
-        # iva = self.iva.get()
-        # nota = self.nota.get()
-        # res = editar_producto(id, nombre, precio, iva, nota)
-        # clave = list(res.keys())[0]
-        # valor = res[clave]
-        # messagebox.showinfo(clave, valor)
-        # self.setTable()
-        pass
-
+        item = self.tabla.selection()[0]
+        self.delete_this_product = item
+            
+        
     def eliminar(self):
-        # id = self.id_producto.get()
-        # res = eliminar_producto(id)
-        # clave = list(res.keys())[0]
-        # valor = res[clave]
-        # messagebox.showinfo(clave, valor)
-        # self.setTable()
-        pass
+        if self.delete_this_product is not None:
+             for item in self.tabla.get_children():
+                if item == self.delete_this_product:
+                    self.tabla.delete(item)
+                    self.updateTotal()
 
     def limpiar(self):
         self.fecha.set("")
