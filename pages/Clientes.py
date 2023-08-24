@@ -56,10 +56,10 @@ class ClientesForm(tk.Frame):
         tk.Label(self, text=" ", height=1).grid(row=9)
 
         tk.Label(self, text="Nacimiento:").grid(row=10, column=0, sticky="e")
-        DateEntry(self, textvariable=self.nacimiento).grid(row=10, column=1, padx=(10,20))
+        DateEntry(self, textvariable=self.nacimiento, date_pattern="dd/mm/y").grid(row=10, column=1, padx=(10,20))
 
         tk.Label(self, text="Ingreso:").grid(row=10, column=2, sticky="e")
-        DateEntry(self, textvariable=self.ingreso).grid(row=10, column=3, padx=(10,20))
+        DateEntry(self, textvariable=self.ingreso, date_pattern="dd/mm/y").grid(row=10, column=3, padx=(10,20))
 
         tk.Label(self, text=" ", height=1).grid(row=11)
 

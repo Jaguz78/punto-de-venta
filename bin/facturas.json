@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "fecha": "8/21/23",
+        "fecha": "21/08/2023",
         "cliente": "Anthony",
         "productos": [
             [
@@ -13,7 +13,7 @@
     },
     {
         "id": 2,
-        "fecha": "8/21/23",
+        "fecha": "21/08/2023",
         "cliente": "Anthony",
         "productos": [
             [
@@ -29,18 +29,30 @@
     },
     {
         "id": 3,
-        "fecha": "8/22/23",
-        "cliente": "Anthony",
+        "fecha": "01/08/2023",
+        "cliente": "Edgar",
+        "productos": [
+            [
+                "Jamon Fud",
+                "2"
+            ],
+            [
+                "Leche LALA",
+                "8"
+            ]
+        ],
+        "total": 264.0
+    },
+    {
+        "id": 4,
+        "fecha": "31/08/2023",
+        "cliente": "Edgar",
         "productos": [
             [
                 "Leche LALA",
-                "1"
-            ],
-            [
-                "Jamon Fud",
-                "1"
+                "13"
             ]
         ],
-        "total": 42.0
+        "total": 390.0
     }
 ]
