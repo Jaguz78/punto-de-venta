@@ -5,6 +5,7 @@ from tkcalendar import DateEntry
 from controllers.productos import getProductos
 from controllers.clientes import getClientes
 from controllers.facturas import *
+from utils import *
 
 class NuevaFacturaForm(tk.Frame):
     def __init__(self, master, userSession):
@@ -87,6 +88,12 @@ class NuevaFacturaForm(tk.Frame):
 
         # Evento para buscar usuario en la tabla
         self.tabla.bind("<ButtonRelease-1>", self.buscar)
+
+        # Flechitas
+        tk.Button(self, text="<-", command=lambda: retroceder(self.tabla), width=5, pady=10).grid(row=11, column=1, pady=20)
+        tk.Button(self, text="<<-", command=lambda: retrocederTodo(self.tabla), width=5, pady=10).grid(row=11, column=2, pady=20)
+        tk.Button(self, text="->>", command=lambda: avanzarTodo(self.tabla), width=5, pady=10).grid(row=11, column=3, pady=20)
+        tk.Button(self, text="->", command=lambda: avanzar(self.tabla), width=5, pady=10).grid(row=11, column=4, pady=20)
     
     def agregar(self):
         producto = self.producto.get()

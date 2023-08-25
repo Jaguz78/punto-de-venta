@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from controllers.productos import *
 from tkinter import messagebox
+from utils import *
 
 class ProductosForm(tk.Frame):
     def __init__(self, master, userSession):
@@ -63,6 +64,12 @@ class ProductosForm(tk.Frame):
         self.tabla.grid(row=10, columnspan=5)
 
         self.setTable()
+
+        # Flechitas
+        tk.Button(self, text="<-", command=lambda: retroceder(self.tabla), width=5, pady=10).grid(row=11, column=1, pady=20)
+        tk.Button(self, text="<<-", command=lambda: retrocederTodo(self.tabla), width=5, pady=10).grid(row=11, column=2, pady=20)
+        tk.Button(self, text="->>", command=lambda: avanzarTodo(self.tabla), width=5, pady=10).grid(row=11, column=3, pady=20)
+        tk.Button(self, text="->", command=lambda: avanzar(self.tabla), width=5, pady=10).grid(row=11, column=4, pady=20)
 
         self.tabla.bind("<ButtonRelease-1>", self.buscar)
     

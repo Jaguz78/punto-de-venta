@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from controllers.users import *
 from tkinter import messagebox
+from utils import *
 
 class UsuariosForm(tk.Frame):
     def __init__(self, master, userSession):
@@ -20,40 +21,50 @@ class UsuariosForm(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        tk.Label(self, text="ID Usuario:").grid(row=0, column=0)
-        tk.Entry(self, textvariable=self.id_usuario).grid(row=0, column=1)
+        tk.Label(self, text="ID Usuario:").grid(row=0, column=0, sticky='e') 
+        tk.Entry(self, textvariable=self.id_usuario, width=30).grid(row=0, column=1, padx=(10,20), pady=(10,20))
 
         tk.Label(self, text="Nombres:").grid(row=0, column=2)
-        tk.Entry(self, textvariable=self.nombres).grid(row=0, column=3)
+        tk.Entry(self, textvariable=self.nombres, width=30).grid(row=0, column=3, padx=(10,20), pady=(10,20))
 
         tk.Label(self, text="Apellidos:").grid(row=1, column=2)
-        tk.Entry(self, textvariable=self.apellidos).grid(row=1, column=3)
+        tk.Entry(self, textvariable=self.apellidos, width=30).grid(row=1, column=3, padx=(10, 20), pady=(10,20))
 
         tk.Label(self, text="Clave:").grid(row=1, column=0)
-        tk.Entry(self, textvariable=self.clave, show="*").grid(row=1, column=1)
+        tk.Entry(self, textvariable=self.clave, show="*", width=30).grid(row=1, column=1, padx=(10, 20), pady=(10,20))
 
         tk.Label(self, text="Confirmar Clave:").grid(row=2, column=0)
-        tk.Entry(self, textvariable=self.confirmacion_clave, show="*").grid(row=2, column=1)
+        tk.Entry(self, textvariable=self.confirmacion_clave, show="*", width=30).grid(row=2, column=1, padx=(10, 20), pady=(10,20))
 
         tk.Label(self, text="Perfil:").grid(row=2, column=2)
         tk.OptionMenu(self, self.perfil, "vendedor", "admin").grid(row=2, column=3)
 
         # Botones
-        tk.Button(self, text="Editar", command=self.edit_user).grid(row=6, column=1)
-        tk.Button(self, text="Guardar", command=self.save_user).grid(row=6, column=2)
-        tk.Button(self, text="Borrar", command=self.delete_user).grid(row=6, column=3)
-        tk.Button(self, text="Cancelar", command=self.clear_fields).grid(row=6, column=5)
+        tk.Button(self, text="Guardar", command=self.save_user, width=10, pady=10).grid(row=6, column=1, pady=20)
+        tk.Button(self, text="Borrar", command=self.delete_user, width=10, pady=10).grid(row=6, column=2, pady=20)
+        tk.Button(self, text="Editar", command=self.edit_user, width=10, pady=10).grid(row=6, column=3, pady=20)
+        tk.Button(self, text="Cancelar", command=self.clear_fields, width=10, pady=10).grid(row=6, column=4, pady=20)
 
         # Tabla
-        self.user_table = ttk.Treeview(self, columns=("ID", "Nombres", "Apellidos", "Perfil"))
+        self.user_table = ttk.Treeview(self, columns=("ID", "Nombres", "Apellidos", "Perfil"), show="headings")
         self.user_table.heading("#1", text="ID")
         self.user_table.heading("#2", text="Nombres")
         self.user_table.heading("#3", text="Apellidos")
         self.user_table.heading("#4", text="Perfil")
+        self.user_table.column("#1", width=100, anchor="center")
+        self.user_table.column("#2", width=200, anchor="center")
+        self.user_table.column("#3", width=200, anchor="center")
+        self.user_table.column("#4", width=150, anchor="center")
         self.user_table.grid(row=7, columnspan=6)
 
         # Rellenar la tabla
         self.setTable()
+
+        # Flechitas
+        tk.Button(self, text="<-", command=lambda: retroceder(self.user_table), width=5, pady=10).grid(row=8, column=1, pady=20)
+        tk.Button(self, text="<<-", command=lambda: retrocederTodo(self.user_table), width=5, pady=10).grid(row=8, column=2, pady=20)
+        tk.Button(self, text="->>", command=lambda: avanzarTodo(self.user_table), width=5, pady=10).grid(row=8, column=3, pady=20)
+        tk.Button(self, text="->", command=lambda: avanzar(self.user_table), width=5, pady=10).grid(row=8, column=4, pady=20)
         
         # Evento para buscar usuario en la tabla
         self.user_table.bind("<ButtonRelease-1>", self.search_user)

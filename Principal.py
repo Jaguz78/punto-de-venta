@@ -2,12 +2,11 @@
 from tkinter import *
 from pages.Ayuda import *
 from pages.Cambio_Clave import *
-from pages.Cambio_Usuario import *
 from pages.Clientes import *
 from pages.Nueva_Factura import *
 from pages.Productos import *
 from pages.Reporte_Facturas import *
-from pages.Usuarios import *
+from pages.Usuarios import *    
 from controllers.session import UserSession
 
 class LoginWindow:
@@ -15,9 +14,9 @@ class LoginWindow:
         self.ventana = ventana
         self.userSession = userSession
         self.ventana.title("Login")
-        self.ventana.geometry("900x600")
+        self.ventana.geometry("400x300")
 
-        self.frame1 = tk.Frame(ventana)
+        self.frame1 = tk.Frame(ventana, bg="#3498db")
         self.frame1.pack(side=tk.TOP, fill=tk.X)
 
         self.frame2 = tk.Frame(ventana)
@@ -35,15 +34,17 @@ class LoginPanel(tk.Frame):
     def __init__(self, parent, userSession):
         super().__init__(parent)
         self.userSession = userSession
-        self.parent =  parent
+        self.parent = parent
+
+        self.configure(bg="#f2f2f2")  # Fondo más claro
         
-        self.label_username = tk.Label(self, text="ID Usuario:")
-        self.label_password = tk.Label(self, text="Contraseña:")
+        self.label_username = tk.Label(self, text="ID Usuario:", bg="#f2f2f2")
+        self.label_password = tk.Label(self, text="Contraseña:", bg="#f2f2f2")
         
-        self.entry_username = tk.Entry(self)
-        self.entry_password = tk.Entry(self, show="*")
+        self.entry_username = ttk.Entry(self)
+        self.entry_password = ttk.Entry(self, show="*")
         
-        self.button_login = tk.Button(self, text="Iniciar Sesión", command=lambda: self.login2())
+        self.button_login = ttk.Button(self, text="Iniciar Sesión", command=self.login2)
         
         self.label_username.pack(pady=10)
         self.entry_username.pack(pady=5)
@@ -51,7 +52,7 @@ class LoginPanel(tk.Frame):
         self.entry_password.pack(pady=5)
         self.button_login.pack(pady=20)
         
-        self.pack()
+        self.pack(fill=tk.BOTH, expand=True)
 
     def login2(self):
         res = self.userSession.login(self.entry_username.get(), self.entry_password.get())
@@ -72,30 +73,30 @@ class App:
         self.ventana = ventana
         self.userSession = userSession
         self.ventana.title("SISTEMA DE FACTURACIÓN")
-        self.ventana.geometry("900x600")
+        self.ventana.geometry("1000x600")
 
-        self.frame1 = tk.Frame(ventana)
+        self.frame1 = tk.Frame(ventana, bg="#3498db")
         self.frame1.pack(side=tk.TOP, fill=tk.X)
 
-        menu_principal = Menu(self.frame1)
+        menu_principal = tk.Menu(self.frame1)
 
-        menu_archivo = Menu(menu_principal, tearoff=0)
+        menu_archivo = tk.Menu(menu_principal, tearoff=0)
         menu_archivo.add_command(label="Clientes", command=lambda: self.mostrar_contenido(ClientesForm))
         menu_archivo.add_command(label="Productos", command=lambda: self.mostrar_contenido(ProductosForm))
         menu_archivo.add_separator()
         if self.userSession.get_role() == 'admin':
             menu_archivo.add_command(label="Usuarios", command=lambda: self.mostrar_contenido(UsuariosForm))
             menu_archivo.add_command(label="Cambio Clave", command=lambda: self.mostrar_contenido(CambioClaveForm))
-            menu_archivo.add_command(label="Cambio Usuario", command=lambda: self.cambio_usuario())
+            menu_archivo.add_command(label="Cambio Usuario", command=self.cambio_usuario)
             menu_archivo.add_separator()
         menu_archivo.add_command(label="Salir", command=ventana.quit)
 
-        menu_movimientos = Menu(menu_principal, tearoff=0)
+        menu_movimientos = tk.Menu(menu_principal, tearoff=0)
         menu_movimientos.add_command(label="Nueva Factura", command=lambda: self.mostrar_contenido(NuevaFacturaForm))
         if self.userSession.get_role() == 'admin':
             menu_movimientos.add_command(label="Reporte Facturas", command=lambda: self.mostrar_contenido(ReporteFacturasForm))
 
-        menu_ayuda = Menu(menu_principal, tearoff=0)
+        menu_ayuda = tk.Menu(menu_principal, tearoff=0)
         menu_ayuda.add_command(label="Acerca de", command=lambda: self.mostrar_contenido(AyudaForm))
 
         menu_principal.add_cascade(label="Archivo", menu=menu_archivo)

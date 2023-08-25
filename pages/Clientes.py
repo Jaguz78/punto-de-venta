@@ -3,6 +3,7 @@ from tkinter import ttk
 from controllers.clientes import *
 from tkcalendar import DateEntry
 from tkinter import messagebox
+from utils import *
 
 class ClientesForm(tk.Frame):
     def __init__(self, master, userSession):
@@ -94,6 +95,12 @@ class ClientesForm(tk.Frame):
         self.setTable()
 
         self.tabla.bind("<ButtonRelease-1>", self.buscar)
+
+        # Flechitas
+        tk.Button(self, text="<-", command=lambda: retroceder(self.tabla), width=5, pady=10).grid(row=15, column=1, pady=20)
+        tk.Button(self, text="<<-", command=lambda: retrocederTodo(self.tabla), width=5, pady=10).grid(row=15, column=2, pady=20)
+        tk.Button(self, text="->>", command=lambda: avanzarTodo(self.tabla), width=5, pady=10).grid(row=15, column=3, pady=20)
+        tk.Button(self, text="->", command=lambda: avanzar(self.tabla), width=5, pady=10).grid(row=15, column=4, pady=20)
     
     def agregar(self):
         id = self.id_cliente.get()
