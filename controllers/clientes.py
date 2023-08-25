@@ -10,29 +10,31 @@ def getClientes():
 
 def agregar_cliente(id, identificacion, nombres, apellidos, direccion, telefono, ciudad, nacimiento, ingreso):
     clientes = getClientes()
-    
+    idd = ""
     for c in clientes:
         if c['id'] == id:
-            errorMessage = {"Error": "El Id del Cliente ya existe"}
-            return errorMessage
-        else:
-            nuevo = {
-                'id' : id,
-                'identificacion' : identificacion,
-                'nombres' : nombres,
-                'apellidos' : apellidos,
-                'direccion' : direccion,
-                'telefono' : telefono,
-                'ciudad' : ciudad,
-                'nacimiento' : nacimiento,
-                'ingreso' : ingreso
-            }
-            clientes.append(nuevo)
+            idd = "igual"
+    if idd == "igual":
+        errorMessage = {"Error": "El Id del Cliente ya existe"}
+        return errorMessage
+    else:
+        nuevo = {
+            'id' : id,
+            'identificacion' : identificacion,
+            'nombres' : nombres,
+            'apellidos' : apellidos,
+            'direccion' : direccion,
+            'telefono' : telefono,
+            'ciudad' : ciudad,
+            'nacimiento' : nacimiento,
+            'ingreso' : ingreso
+        }
+        clientes.append(nuevo)
 
-        with open(ARCH_CLIENTES, 'w') as archive:
-            json.dump(clientes, archive, indent=4)
-        response = {"success": "El Cliente fue agregado exitosamente"}
-        return response
+    with open(ARCH_CLIENTES, 'w') as archive:
+        json.dump(clientes, archive, indent=4)
+    response = {"success": "El Cliente fue agregado exitosamente"}
+    return response
 
 def editar_cliente(id, identificacion, nombres, apellidos, direccion, telefono, ciudad, nacimiento, ingreso):
     clientes = getClientes()

@@ -12,5 +12,19 @@
         "precio": "12",
         "iva": "5%",
         "nota": "Jamon de pavo"
+    },
+    {
+        "id": "3",
+        "nombre": "Galleta Oreo",
+        "precio": "3",
+        "iva": "12%",
+        "nota": "Galleta de chocolate"
+    },
+    {
+        "id": "4",
+        "nombre": "Canela",
+        "precio": "2",
+        "iva": "5%",
+        "nota": "Canela molida"
     }
 ]

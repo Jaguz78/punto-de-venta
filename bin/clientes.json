@@ -12,13 +12,24 @@
     },
     {
         "id": "1",
-        "identificacion": "Pasaporte",
+        "identificacion": "DPI",
         "nombres": "Edgar",
         "apellidos": "Gonzalez",
         "direccion": "Coban",
-        "telefono": "111",
+        "telefono": "444",
         "ciudad": "Coban",
-        "nacimiento": "01/08/2023",
-        "ingreso": "17/08/2023"
+        "nacimiento": "10/08/2022",
+        "ingreso": "24/08/2023"
+    },
+    {
+        "id": "3",
+        "identificacion": "DPI",
+        "nombres": "Jose",
+        "apellidos": "Guzman H",
+        "direccion": "Santa Cruz",
+        "telefono": "555",
+        "ciudad": "Santa Cruz",
+        "nacimiento": "03/07/2023",
+        "ingreso": "24/08/2023"
     }
 ]

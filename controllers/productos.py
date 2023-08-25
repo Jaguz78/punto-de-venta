@@ -10,25 +10,27 @@ def getProductos():
 
 def agregar_producto(id, nombre, precio, iva, nota):
     productos = getProductos()
-    
+    idd = ""
     for p in productos:
         if p['id'] == id:
-            errorMessage = {"Error": "El Id del Producto ya existe"}
-            return errorMessage
-        else:
-            nuevo = {
-                'id' : id,
-                'nombre' : nombre,
-                'precio' : precio,
-                'iva' : iva,
-                'nota' : nota
-            }
-            productos.append(nuevo)
+            idd = "igual"
+    if idd == "igual":
+        errorMessage = {"Error": "El Id del Producto ya existe"}
+        return errorMessage
+    else:
+        nuevo = {
+            'id' : id,
+            'nombre' : nombre,
+            'precio' : precio,
+            'iva' : iva,
+            'nota' : nota
+        }
+        productos.append(nuevo)
 
-        with open(ARCH_PRODUCTOS, 'w') as archive:
-            json.dump(productos, archive, indent=4)
-        response = {"success": "El Producto fue agregado exitosamente"}
-        return response
+    with open(ARCH_PRODUCTOS, 'w') as archive:
+        json.dump(productos, archive, indent=4)
+    response = {"success": "El Producto fue agregado exitosamente"}
+    return response
 
 def editar_producto(id, nombre, precio, iva, nota):
     productos = getProductos()

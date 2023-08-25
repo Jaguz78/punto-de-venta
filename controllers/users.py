@@ -10,25 +10,27 @@ def getUsers():
 
 def createUser(id, name, lastname, password, confirm, role):
     users = getUsers()
-    
+    idd = ""
     for user in users:
         if user['id'] == id:
-            errorMessage = {"error": "El id de usuario seleccionado ya existe"}
-            return errorMessage
-        elif password == confirm:
-            newUser = {
-                'id': id,
-                'name': name,
-                'lastname': lastname or "",
-                'password': password,
-                'role': role
-            }
-            users.append(newUser)
+            idd = "igual"
+    if idd == "igual":
+        errorMessage = {"error": "El id de usuario seleccionado ya existe"}
+        return errorMessage
+    elif password == confirm:
+        newUser = {
+            'id': id,
+            'name': name,
+            'lastname': lastname or "",
+            'password': password,
+            'role': role
+        }
+        users.append(newUser)
 
-        with open(ARCH_USERS, 'w') as archive:
-            json.dump(users, archive, indent=4)
-        response = {"success": "El Usuario fue creado exitosamente"}
-        return response
+    with open(ARCH_USERS, 'w') as archive:
+        json.dump(users, archive, indent=4)
+    response = {"success": "El Usuario fue creado exitosamente"}
+    return response
     
 def deleteUser(id):
     users = getUsers()

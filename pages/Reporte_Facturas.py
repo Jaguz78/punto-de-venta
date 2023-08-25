@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 from tkcalendar import DateEntry
 from datetime import datetime
 from tkinter import filedialog
@@ -150,6 +151,7 @@ class ReporteFacturasForm(tk.Frame):
 
         if file_path:
             pdf.output(file_path)
+        messagebox.showinfo("Mensaje", "Reporte PDF generado")
 
     def limpiar(self):
         self.cliente.set("")
