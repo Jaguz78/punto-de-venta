@@ -84,10 +84,10 @@ class App:
         menu_archivo.add_command(label="Clientes", command=lambda: self.mostrar_contenido(ClientesForm))
         menu_archivo.add_command(label="Productos", command=lambda: self.mostrar_contenido(ProductosForm))
         menu_archivo.add_separator()
+        menu_archivo.add_command(label="Cambio Clave", command=lambda: self.mostrar_contenido(CambioClaveForm))
+        menu_archivo.add_command(label="Cambio Usuario", command=self.cambio_usuario)
         if self.userSession.get_role() == 'admin':
             menu_archivo.add_command(label="Usuarios", command=lambda: self.mostrar_contenido(UsuariosForm))
-            menu_archivo.add_command(label="Cambio Clave", command=lambda: self.mostrar_contenido(CambioClaveForm))
-            menu_archivo.add_command(label="Cambio Usuario", command=self.cambio_usuario)
             menu_archivo.add_separator()
         menu_archivo.add_command(label="Salir", command=ventana.quit)
 
@@ -114,6 +114,7 @@ class App:
         self.frame2.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
     def cambio_usuario(self):
+        self.userSession.logout()
         self.ventana.destroy()
         newVentana = tk.Tk()
         LoginWindow(newVentana, self.userSession)
