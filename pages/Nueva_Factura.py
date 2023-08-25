@@ -42,7 +42,7 @@ class NuevaFacturaForm(tk.Frame):
     
     def crear_vista(self):
         tk.Label(self, text="Fecha:").grid(row=0, column=0, sticky="e")
-        DateEntry(self, textvariable=self.fecha).grid(row=0, column=1, padx=(10,20))
+        DateEntry(self, textvariable=self.fecha, date_pattern="dd/mm/y").grid(row=0, column=1, padx=(10,20))
 
         tk.Label(self, text=" ", height=1).grid(row=1)
 

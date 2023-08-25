@@ -1,9 +1,13 @@
 import tkinter as tk
 
 class AyudaForm(tk.Frame):
-    def __init__(self, root, userSession):
-        super().__init__(root)
+    def __init__(self, master, userSession):
+        super().__init__(master)
+        self.master = master
         self.userSession = userSession
-        
-        self.label = tk.Label(self, text="ACERCA DE", font=("Helvetica", 20))
-        self.label.pack(padx=20, pady=20)
+        self.master.title("Sistema de Facturación")
+
+        e = tk.Label(self, text="SISTEMA DE FACTURACIÓN GG", font=(24)).grid(row=0, pady=15, padx=295)
+        tk.Label(self, text="Edgar Anthony Enmanuel Gonzalez López - 202146223").grid(row=1)
+        tk.Label(self, text="José Alejandro Guzmán Heinemann - 202146223").grid(row=2)
+        tk.Label(self, text="Archivos - Sexto Semestre 2023").grid(row=3)
