@@ -12,5 +12,19 @@
         "lastname": "Guzm\u00e1n",
         "password": "n",
         "role": "admin"
+    },
+    {
+        "id": "1",
+        "name": "Edgar",
+        "lastname": "Lopez",
+        "password": "123",
+        "role": "vendedor"
+    },
+    {
+        "id": "Mani",
+        "name": "Mani",
+        "lastname": "",
+        "password": "12345",
+        "role": "admin"
     }
 ]
