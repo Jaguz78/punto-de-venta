@@ -1,67 +1,28 @@
-import json
-import os
+from dbConnection import establecer_conexion
 
-ARCH_CLIENTES = os.path.join(os.path.dirname(__file__), '../bin/clientes.json')
+conexion = establecer_conexion()
 
 def getClientes():
-    with open(ARCH_CLIENTES, 'r') as archive:
-        clientes = json.load(archive)
-    return clientes
+    cursor = conexion.cursor()
+    cursor.execute('SELECT * FROM clientes')
+    return cursor
 
-def agregar_cliente(id, identificacion, nombres, apellidos, direccion, telefono, ciudad, nacimiento, ingreso):
-    clientes = getClientes()
-    idd = ""
-    for c in clientes:
-        if c['id'] == id:
-            idd = "igual"
-    if idd == "igual":
-        errorMessage = {"Error": "El Id del Cliente ya existe"}
-        return errorMessage
-    else:
-        nuevo = {
-            'id' : id,
-            'identificacion' : identificacion,
-            'nombres' : nombres,
-            'apellidos' : apellidos,
-            'direccion' : direccion,
-            'telefono' : telefono,
-            'ciudad' : ciudad,
-            'nacimiento' : nacimiento,
-            'ingreso' : ingreso
-        }
-        clientes.append(nuevo)
-
-    with open(ARCH_CLIENTES, 'w') as archive:
-        json.dump(clientes, archive, indent=4)
-    response = {"success": "El Cliente fue agregado exitosamente"}
-    return response
+def agregar_cliente(nombres, apellidos, direccion, telefono, ciudad, identificacion, nacimiento, ingreso):
+    cursor = conexion.cursor()
+    cursor.execute("INSERT INTO clientes (nombres, apellidos, dirección, telefono, id_ciudad, id_identificacion, fecha_nac, fecha_ingreso) VALUES (?,?,?,?,?,?,?,?)",\
+        nombres, apellidos, direccion, telefono, ciudad, identificacion, nacimiento, ingreso)
+    conexion.commit()
+    cursor.close()
 
 def editar_cliente(id, identificacion, nombres, apellidos, direccion, telefono, ciudad, nacimiento, ingreso):
-    clientes = getClientes()
-    
-    for c in clientes:
-        if c['id'] == id:
-            c['id'] = id
-            c['identificacion'] = identificacion
-            c['nombres'] = nombres
-            c['apellidos'] = apellidos
-            c['direccion'] = direccion
-            c['telefono'] = telefono
-            c['ciudad'] = ciudad
-            c['nacimiento'] = nacimiento
-            c['ingreso'] = ingreso
-
-            with open(ARCH_CLIENTES, 'w') as archive:
-                json.dump(clientes, archive, indent=4)
-            return {"success": "El Cliente fue editado exitosamente"}
-    return {"Error": "No existe un Cliente con ese Id"}
+    cursor = conexion.cursor()
+    cursor.execute("UPDATE clientes SET nombres=?, apellidos=?, dirección=?, telefono=?, id_cuidad=?, id_identificacion=?, fecha_nac=?, fecha_ingreso=? WHERE id=?",\
+        nombres, apellidos, direccion, telefono, ciudad, identificacion, nacimiento, ingreso, id)
+    conexion.commit()
+    cursor.close()
 
 def eliminar_cliente(id):
-    clientes = getClientes()
-    for c in clientes:
-        if c['id'] == id:
-            clientes.remove(c)
-            with open(ARCH_CLIENTES, 'w') as archive:
-                json.dump(clientes, archive, indent=4)
-            return {"success": "El Cliente fue eliminado exitosamente"}                
-    return {"Error": "No se encontro un Cliente con ese Id"}
+    cursor = conexion.cursor()
+    cursor.execute("DELETE FROM clientes WHERE id=?", id)
+    conexion.commit()
+    cursor.close()

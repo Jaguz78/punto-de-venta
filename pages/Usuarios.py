@@ -17,6 +17,8 @@ class UsuariosForm(tk.Frame):
         self.clave = tk.StringVar()
         self.confirmacion_clave = tk.StringVar()
         self.perfil = tk.StringVar()
+        self.direccion = tk.StringVar()
+        self.telefono = tk.StringVar()
 
         self.create_widgets()
 
@@ -39,6 +41,12 @@ class UsuariosForm(tk.Frame):
         tk.Label(self, text="Perfil:").grid(row=2, column=2)
         tk.OptionMenu(self, self.perfil, "vendedor", "admin").grid(row=2, column=3)
 
+        tk.Label(self, text="Dirección:").grid(row=3, column=0)
+        tk.Entry(self, textvariable=self.nombres, width=30).grid(row=3, column=0, padx=(10,20), pady=(10,20))
+
+        tk.Label(self, text="Telefono:").grid(row=3, column=2)
+        tk.Entry(self, textvariable=self.apellidos, width=30).grid(row=3, column=2, padx=(10, 20), pady=(10,20))
+
         # Botones
         tk.Button(self, text="Guardar", command=self.save_user, width=10, pady=10).grid(row=6, column=1, pady=20)
         tk.Button(self, text="Borrar", command=self.delete_user, width=10, pady=10).grid(row=6, column=2, pady=20)
@@ -46,15 +54,19 @@ class UsuariosForm(tk.Frame):
         tk.Button(self, text="Cancelar", command=self.clear_fields, width=10, pady=10).grid(row=6, column=4, pady=20)
 
         # Tabla
-        self.user_table = ttk.Treeview(self, columns=("ID", "Nombres", "Apellidos", "Perfil"), show="headings")
+        self.user_table = ttk.Treeview(self, columns=("ID", "Nombres", "Apellidos", "Perfil", "Dirección", "Telefono"), show="headings")
         self.user_table.heading("#1", text="ID")
         self.user_table.heading("#2", text="Nombres")
         self.user_table.heading("#3", text="Apellidos")
         self.user_table.heading("#4", text="Perfil")
+        self.user_table.heading("#5", text="Dirección")
+        self.user_table.heading("#6", text="Telefono")
         self.user_table.column("#1", width=100, anchor="center")
         self.user_table.column("#2", width=200, anchor="center")
         self.user_table.column("#3", width=200, anchor="center")
         self.user_table.column("#4", width=150, anchor="center")
+        self.user_table.column("#5", width=200, anchor="center")
+        self.user_table.column("#6", width=150, anchor="center")
         self.user_table.grid(row=7, columnspan=6)
 
         # Rellenar la tabla
@@ -77,6 +89,8 @@ class UsuariosForm(tk.Frame):
         self.clave.set("")
         self.confirmacion_clave.set("")
         self.perfil.set("")
+        self.direccion.set("")
+        self.telefono.set("")
 
     def edit_user(self):
         id = self.id_usuario.get()
@@ -98,12 +112,17 @@ class UsuariosForm(tk.Frame):
         password = self.clave.get()
         confirm = self.confirmacion_clave.get()
         role = self.perfil.get()
-        res = createUser(id, name, lastname, password, confirm, role)
-        #Feedback
-        clave = list(res.keys())[0]
-        valor = res[clave]
-        messagebox.showinfo(clave, valor)
-        self.setTable()
+        direccion = self.direccion.get()
+        telefono = self.telefono.get()
+
+        # Validar datos ...
+        # if taBienLaValidada:
+        #     createUser(todosLosParametrosEnOrden)
+        #     self.setTable()
+        #     print("Mensaje de exito")
+        # else:
+        #     print("Mensaje de error")
+            
 
     def delete_user(self):
         id = self.id_usuario.get()

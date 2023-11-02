@@ -1,34 +1,33 @@
-import json
-import os
+from dbConnection import establecer_conexion
 
-ARCH_FACTURAS = os.path.join(os.path.dirname(__file__), '../bin/facturas.json')
-ID_FACTURAS = os.path.join(os.path.dirname(__file__), '../bin/id_facturas.json')
+conexion = establecer_conexion()
 
 def getFacturas():
-    with open(ARCH_FACTURAS, 'r') as archive:
-        facturas = json.load(archive)
-    return facturas
+    cursor = conexion.cursor()
+    cursor.execute('SELECT * FROM facturas')
+    return cursor
 
-def getIdFacturas():
-    with open(ID_FACTURAS, 'r') as archive:
-        id = json.load(archive)
-    return id
-
-def createFactura(fecha, cliente, productos, total):
-    id = getIdFacturas()
-    facturas = getFacturas()
-    id['id'] += 1
-    newFactura = {
-        'id':  id['id'],
-        'fecha': fecha,
-        'cliente': cliente,
-        'productos': productos,
-        'total': total
-    }
-    facturas.append(newFactura)
-    with open(ARCH_FACTURAS, 'w') as archive:
-        json.dump(facturas, archive, indent=4)
-    with open(ID_FACTURAS, 'w') as archive:
-        json.dump(id, archive, indent=4)
-    response = {"success": "La factura fue creada exitosamente"}
-    return response
+def createFactura(fecha, cliente, session, productos):
+    cursor = conexion.cursor()
+    c = cursor.execute("SELECT id FROM clientes WHERE nombres = ?", cliente)
+    conexion.commit()
+    row = c.fetchone()
+    if row:
+        idClient = row[0]
+    else:
+        idClient = None
+    cursor.execute("INSERT INTO facturas (fecha, id_cliente, id_usuario) VALUES (?,?,?)",\
+        fecha, idClient, session.username)
+    conexion.commit()
+    cursor.execute("SELECT SCOPE_IDENTITY() AS new_id")
+    conexion.commit()
+    row = cursor.fetchone()
+    if row:
+        new_id = row.new_id
+        for p in productos:
+            cursor.execute("INSERT INTO detalle_facturas (id_factura, id_producto, cantidad, subtotal) VALUES (?,?,?,?)",\
+                           new_id, p[0], p[1], p[2])
+            conexion.commit()
+    else:
+        print("No se pudo obtener el nuevo ID de la factura.")
+    cursor.close()

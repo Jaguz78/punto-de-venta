@@ -103,7 +103,7 @@ class ClientesForm(tk.Frame):
         tk.Button(self, text="->", command=lambda: avanzar(self.tabla), width=5, pady=10).grid(row=15, column=4, pady=20)
     
     def agregar(self):
-        id = self.id_cliente.get()
+        # id = self.id_cliente.get()
         identificacion = self.identificacion.get()
         nombres = self.nombres.get()
         apellidos = self.apellidos.get()
@@ -112,10 +112,10 @@ class ClientesForm(tk.Frame):
         ciudad = self.ciudad.get()
         nacimiento = self.nacimiento.get()
         ingreso = self.ingreso.get()
-        res = agregar_cliente(id, identificacion, nombres, apellidos, direccion, telefono, ciudad, nacimiento, ingreso)
-        clave = list(res.keys())[0]
-        valor = res[clave]
-        messagebox.showinfo(clave, valor)
+        res = agregar_cliente(nombres, apellidos, direccion, telefono, ciudad, identificacion, nacimiento, ingreso)
+        # clave = list(res.keys())[0]
+        # valor = res[clave]
+        # messagebox.showinfo(clave, valor)
         self.setTable()
 
     def buscar(self, event):
