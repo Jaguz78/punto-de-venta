@@ -3,6 +3,7 @@ from tkinter import ttk
 from controllers.productos import *
 from tkinter import messagebox
 from utils import *
+from validaciones.v_productos import *
 
 class ProductosForm(tk.Frame):
     def __init__(self, master, userSession):
@@ -11,7 +12,7 @@ class ProductosForm(tk.Frame):
         self.userSession = userSession
         self.master.title("Gestión de Productos")
 
-        self.id_producto = tk.StringVar()
+        self.id_producto = tk.StringVar() ###
         self.nombre = tk.StringVar()
         self.precio = tk.StringVar()
         self.iva = tk.StringVar()
@@ -20,35 +21,22 @@ class ProductosForm(tk.Frame):
         self.crear_vista()
     
     def crear_vista(self):
-        tk.Label(self, text="Id Producto:").grid(row=0, column=0, sticky="e")
-        tk.Entry(self, textvariable=self.id_producto, width=30).grid(row=0, column=1, padx=(10,20))
+        tk.Label(self, text="Nombre:").grid(row=0, column=0, sticky="e", pady=10)
+        tk.Entry(self, textvariable=self.nombre, width=30).grid(row=0, column=1, padx=(10,20), pady=10)
 
-        tk.Label(self, text=" ", height=1).grid(row=1)
+        tk.Label(self, text="Precio:").grid(row=0, column=2, sticky="e", pady=10)
+        tk.Entry(self, textvariable=self.precio, width=30).grid(row=0, column=3, padx=(10,20), pady=10)
 
-        tk.Label(self, text="Nombre:").grid(row=2, column=0, sticky="e")
-        tk.Entry(self, textvariable=self.nombre, width=30).grid(row=2, column=1, padx=(10,20))
+        tk.Label(self, text="Nota:").grid(row=1, column=0, sticky="e", pady=10)
+        tk.Entry(self, textvariable=self.nota, width=30).grid(row=1, column=1, padx=(10,20), pady=10)
 
-        tk.Label(self, text=" ", height=1).grid(row=3)
+        tk.Label(self, text="IVA:").grid(row=1, column=2, sticky="e", pady=10)
+        tk.OptionMenu(self, self.iva, "5%", "12%").grid(row=1, column=3, padx=(10,20), pady=10)
 
-        tk.Label(self, text="Precio:").grid(row=4, column=0, sticky="e")
-        tk.Entry(self, textvariable=self.precio, width=30).grid(row=4, column=1, padx=(10,20))
-
-        tk.Label(self, text="IVA:").grid(row=4, column=2, sticky="e")
-        tk.OptionMenu(self, self.iva, "5%", "12%").grid(row=4, column=3, padx=(10,20))
-
-        tk.Label(self, text=" ", height=1).grid(row=5)
-
-        tk.Label(self, text="Nota:").grid(row=6, column=0, sticky="e")
-        tk.Entry(self, textvariable=self.nota, width=30).grid(row=6, column=1, padx=(10,20))
-
-        tk.Label(self, text=" ", height=1).grid(row=7)
-
-        tk.Button(self, text="Agregar", command=self.agregar).grid(row=8, column=0)
-        tk.Button(self, text="Editar", command=self.editar).grid(row=8, column=1)
-        tk.Button(self, text="Eliminar", command=self.eliminar).grid(row=8, column=2)
-        tk.Button(self, text="Limpiar", command=self.limpiar).grid(row=8, column=3)
-
-        tk.Label(self, text=" ", height=1).grid(row=9)
+        tk.Button(self, text="Agregar", command=self.agregar).grid(row=2, column=0, pady=10)
+        tk.Button(self, text="Editar", command=self.editar).grid(row=2, column=1, pady=10)
+        tk.Button(self, text="Eliminar", command=self.eliminar).grid(row=2, column=2, pady=10)
+        tk.Button(self, text="Limpiar", command=self.limpiar).grid(row=2, column=3, pady=10)
 
         self.tabla = ttk.Treeview(self, columns=("Id Producto", "Nombre", "Precio", "IVA", "Nota"), show="headings")
         self.tabla.heading("#1", text="Id Producto")
@@ -61,29 +49,26 @@ class ProductosForm(tk.Frame):
         self.tabla.column("#3", width=80, anchor="center")
         self.tabla.column("#4", width=80, anchor="center")
         self.tabla.column("#5", width=150, anchor="center")
-        self.tabla.grid(row=10, columnspan=5)
+        self.tabla.grid(row=3, columnspan=5, pady=10)
 
-        self.setTable()
+        self.setTable() 
 
-        # Flechitas
-        tk.Button(self, text="<-", command=lambda: retroceder(self.tabla), width=5, pady=10).grid(row=11, column=1, pady=20)
-        tk.Button(self, text="<<-", command=lambda: retrocederTodo(self.tabla), width=5, pady=10).grid(row=11, column=2, pady=20)
-        tk.Button(self, text="->>", command=lambda: avanzarTodo(self.tabla), width=5, pady=10).grid(row=11, column=3, pady=20)
-        tk.Button(self, text="->", command=lambda: avanzar(self.tabla), width=5, pady=10).grid(row=11, column=4, pady=20)
+        tk.Button(self, text="<-", command=lambda: retroceder(self.tabla), width=5, pady=10).grid(row=4, column=0, pady=20)
+        tk.Button(self, text="<<-", command=lambda: retrocederTodo(self.tabla), width=5, pady=10).grid(row=4, column=1, pady=20)
+        tk.Button(self, text="->>", command=lambda: avanzarTodo(self.tabla), width=5, pady=10).grid(row=4, column=2, pady=20)
+        tk.Button(self, text="->", command=lambda: avanzar(self.tabla), width=5, pady=10).grid(row=4, column=3, pady=20)
 
         self.tabla.bind("<ButtonRelease-1>", self.buscar)
     
     def agregar(self):
-        id = self.id_producto.get()
+        id = self.id_producto.get() ###
         nombre = self.nombre.get()
         precio = self.precio.get()
         iva = self.iva.get()
         nota = self.nota.get()
-        res = agregar_producto(id, nombre, precio, iva, nota)
-        clave = list(res.keys())[0]
-        valor = res[clave]
-        messagebox.showinfo(clave, valor)
-        self.setTable()
+        if v_enguardar(nombre, precio, iva, nota):
+            agregar_producto(nombre, precio, iva, nota)
+            self.setTable()
 
     def buscar(self, event):
         item = self.tabla.selection()[0]
@@ -96,27 +81,23 @@ class ProductosForm(tk.Frame):
             self.nota.set(values[4])
 
     def editar(self):
-        id = self.id_producto.get()
+        id = self.id_producto.get() ###
         nombre = self.nombre.get()
         precio = self.precio.get()
         iva = self.iva.get()
         nota = self.nota.get()
-        res = editar_producto(id, nombre, precio, iva, nota)
-        clave = list(res.keys())[0]
-        valor = res[clave]
-        messagebox.showinfo(clave, valor)
-        self.setTable()
+        if v_eneditar(nombre, precio, iva, nota):
+            editar_producto(id, nombre, precio, iva, nota)
+            self.setTable()
 
     def eliminar(self):
-        id = self.id_producto.get()
-        res = eliminar_producto(id)
-        clave = list(res.keys())[0]
-        valor = res[clave]
-        messagebox.showinfo(clave, valor)
-        self.setTable()
+        id = self.id_producto.get() ###
+        if v_eneliminar(id):
+            eliminar_producto(id)
+            self.setTable()
 
     def limpiar(self):
-        self.id_producto.set("")
+        self.id_producto.set("") ###
         self.nombre.set("")
         self.precio.set("")
         self.iva.set("")

@@ -25,4 +25,4 @@ def editUser(id, name, lastname, perfil, password, direccion, telefono):
     cursor.execute("UPDATE usuarios SET nombres=?, apellidos=?, id_perfil=?, clave=?, direccion=?, telefono=? WHERE id=?",\
         name, lastname, perfil, password, direccion, telefono, id)
     conexion.commit()
-    cursor.close()   
+    cursor.close()    

@@ -29,5 +29,5 @@ def createFactura(fecha, cliente, session, productos):
                            new_id, p[0], p[1], p[2])
             conexion.commit()
     else:
-        print("No se pudo obtener el nuevo ID de la factura.")
+        print("No se pudo obtener el nuevo ID de la factura")
     cursor.close()

@@ -7,17 +7,17 @@ def getClientes():
     cursor.execute('SELECT * FROM clientes')
     return cursor
 
-def agregar_cliente(nombres, apellidos, direccion, telefono, ciudad, identificacion, nacimiento, ingreso):
+def agregar_cliente(nombres, apellidos, direccion, telefono, ciudad, identificacion, nacimiento, ingreso, nit):
     cursor = conexion.cursor()
-    cursor.execute("INSERT INTO clientes (nombres, apellidos, dirección, telefono, id_ciudad, id_identificacion, fecha_nac, fecha_ingreso) VALUES (?,?,?,?,?,?,?,?)",\
-        nombres, apellidos, direccion, telefono, ciudad, identificacion, nacimiento, ingreso)
+    cursor.execute("INSERT INTO clientes (nombres, apellidos, dirección, telefono, id_ciudad, id_identificacion, fecha_nac, fecha_ingreso, nit) VALUES (?,?,?,?,?,?,?,?,?)",\
+        nombres, apellidos, direccion, telefono, ciudad, identificacion, nacimiento, ingreso, nit)
     conexion.commit()
     cursor.close()
 
-def editar_cliente(id, identificacion, nombres, apellidos, direccion, telefono, ciudad, nacimiento, ingreso):
+def editar_cliente(nombres, apellidos, direccion, telefono, ciudad, identificacion, nacimiento, ingreso, nit, id):
     cursor = conexion.cursor()
-    cursor.execute("UPDATE clientes SET nombres=?, apellidos=?, dirección=?, telefono=?, id_cuidad=?, id_identificacion=?, fecha_nac=?, fecha_ingreso=? WHERE id=?",\
-        nombres, apellidos, direccion, telefono, ciudad, identificacion, nacimiento, ingreso, id)
+    cursor.execute("UPDATE clientes SET nombres=?, apellidos=?, dirección=?, telefono=?, id_cuidad=?, id_identificacion=?, fecha_nac=?, fecha_ingreso=?, nit=? WHERE id=?",\
+        nombres, apellidos, direccion, telefono, ciudad, identificacion, nacimiento, ingreso, nit, id)
     conexion.commit()
     cursor.close()
 

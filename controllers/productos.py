@@ -25,4 +25,4 @@ def eliminar_producto(id):
     cursor = conexion.cursor()
     cursor.execute("DELETE FROM productos WHERE id=?", id)
     conexion.commit()
-    cursor.close()
+    cursor.close() 
