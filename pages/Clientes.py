@@ -23,41 +23,63 @@ class ClientesForm(tk.Frame):
         self.nacimiento = tk.StringVar()
         self.ingreso = tk.StringVar()
         self.nit = tk.StringVar()
+        self.id = tk.StringVar()
+
+        self.identificaciones = self.fillIdentificacion()
+        self.ciudades = self.fillCiudad()
 
         self.crear_vista()
     
+    def fillIdentificacion(self):
+        identificacion = getIdentificaciones()
+        ident = []
+        for i in identificacion:
+            ident.append(i[1])
+        return ident
+    
+    def fillCiudad(self):
+        ciudad = getCiudades()
+        ciudades = []
+        for c in ciudad:
+            ciudades.append(c[1])
+        return ciudades
+
     def crear_vista(self):
-        tk.Label(self, text="Nit:").grid(row=0, column=0, sticky="e", pady=10)
-        tk.Entry(self, textvariable=self.nit, width=30).grid(row=0, column=1, padx=(10,20), pady=10)
+        tk.Label(self, text="Id a buscar:").grid(row=0, column=0, sticky="e", pady=20) 
+        tk.Entry(self, textvariable=self.id, width=30).grid(row=0, column=1, padx=(10,20), pady=20)
+        tk.Button(self, text="Buscar", command=self.encontrar).grid(row=0, column=2, pady=20)
 
-        tk.Label(self, text="Nombres:").grid(row=1, column=0, sticky="e", pady=10)
-        tk.Entry(self, textvariable=self.nombres, width=30).grid(row=1, column=1, padx=(10,20), pady=10)
+        tk.Label(self, text="Nit:").grid(row=1, column=0, sticky="e", pady=8)
+        tk.Entry(self, textvariable=self.nit, width=30).grid(row=1, column=1, padx=(10,20), pady=8)
 
-        tk.Label(self, text="Apellidos:").grid(row=1, column=2, sticky="e", pady=10)
-        tk.Entry(self, textvariable=self.apellidos, width=30).grid(row=1, column=3, padx=(10,20), pady=10)
+        tk.Label(self, text="Nombres:").grid(row=2, column=0, sticky="e", pady=8)
+        tk.Entry(self, textvariable=self.nombres, width=30).grid(row=2, column=1, padx=(10,20), pady=8)
+
+        tk.Label(self, text="Apellidos:").grid(row=2, column=2, sticky="e", pady=8)
+        tk.Entry(self, textvariable=self.apellidos, width=30).grid(row=2, column=3, padx=(10,20), pady=8)
         
-        tk.Label(self, text="Dirección:").grid(row=2, column=0, sticky="e", pady=10)
-        tk.Entry(self, textvariable=self.direccion, width=30).grid(row=2, column=1, padx=(10,20), pady=10)
+        tk.Label(self, text="Dirección:").grid(row=3, column=0, sticky="e", pady=8)
+        tk.Entry(self, textvariable=self.direccion, width=30).grid(row=3, column=1, padx=(10,20), pady=8)
 
-        tk.Label(self, text="Identificación:").grid(row=2, column=2, sticky="e", pady=10)
-        tk.OptionMenu(self, self.identificacion, "DPI", "Pasaporte").grid(row=2, column=3, padx=(10,20), pady=10)
+        tk.Label(self, text="Identificación:").grid(row=3, column=2, sticky="e", pady=8)
+        tk.OptionMenu(self, self.identificacion, *self.identificaciones).grid(row=3, column=3, padx=(10,20), pady=8)
 
-        tk.Label(self, text="Teléfono:").grid(row=3, column=0, sticky="e", pady=10)
-        tk.Entry(self, textvariable=self.telefono, width=30).grid(row=3, column=1, padx=(10,20), pady=10)
+        tk.Label(self, text="Teléfono:").grid(row=4, column=0, sticky="e", pady=8)
+        tk.Entry(self, textvariable=self.telefono, width=30).grid(row=4, column=1, padx=(10,20), pady=8)
 
-        tk.Label(self, text="Ciudad:").grid(row=3, column=2, sticky="e", pady=10)
-        tk.OptionMenu(self, self.ciudad, "Coban", "Carcha", "Chamelco", "Santa Cruz", "San Cristobal", "Tactic").grid(row=3, column=3, padx=(10,20), pady=10)
+        tk.Label(self, text="Ciudad:").grid(row=4, column=2, sticky="e", pady=8)
+        tk.OptionMenu(self, self.ciudad, *self.ciudades).grid(row=4, column=3, padx=(10,20), pady=8)
 
-        tk.Label(self, text="Nacimiento:").grid(row=4, column=0, sticky="e", pady=10)
-        DateEntry(self, textvariable=self.nacimiento, date_pattern="dd/mm/y").grid(row=4, column=1, padx=(10,20), pady=10)
+        tk.Label(self, text="Nacimiento:").grid(row=5, column=0, sticky="e", pady=8)
+        DateEntry(self, textvariable=self.nacimiento, date_pattern="dd/mm/y").grid(row=5, column=1, padx=(10,20), pady=8)
 
-        tk.Label(self, text="Ingreso:").grid(row=4, column=2, sticky="e", pady=10)
-        DateEntry(self, textvariable=self.ingreso, date_pattern="dd/mm/y").grid(row=4, column=3, padx=(10,20), pady=10)
+        tk.Label(self, text="Ingreso:").grid(row=5, column=2, sticky="e", pady=8)
+        DateEntry(self, textvariable=self.ingreso, date_pattern="dd/mm/y").grid(row=5, column=3, padx=(10,20), pady=8)
 
-        tk.Button(self, text="Agregar", command=self.agregar).grid(row=5, column=0, pady=10)
-        tk.Button(self, text="Editar", command=self.editar).grid(row=5, column=1, pady=10)
-        tk.Button(self, text="Eliminar", command=self.eliminar).grid(row=5, column=2, pady=10)
-        tk.Button(self, text="Limpiar", command=self.limpiar).grid(row=5, column=3, pady=10)
+        tk.Button(self, text="Agregar", command=self.agregar).grid(row=6, column=0, pady=8)
+        tk.Button(self, text="Editar", command=self.editar).grid(row=6, column=1, pady=8)
+        tk.Button(self, text="Eliminar", command=self.eliminar).grid(row=6, column=2, pady=8)
+        tk.Button(self, text="Limpiar", command=self.limpiar).grid(row=6, column=3, pady=8)
 
         self.tabla = ttk.Treeview(self, columns=("Id Cliente", "Identificación", "Nombres", "Apellidos", "Nit", "Dirección", "Teléfono", "Ciudad", "Nacimiento", "Ingreso"), show="headings")
         self.tabla.heading("#1", text="Id Cliente")
@@ -80,16 +102,16 @@ class ClientesForm(tk.Frame):
         self.tabla.column("#8", width=80, anchor="center")
         self.tabla.column("#9", width=80, anchor="center")
         self.tabla.column("#10", width=80, anchor="center")
-        self.tabla.grid(row=6, columnspan=9, pady=10)
+        self.tabla.grid(row=7, columnspan=9, pady=8)
 
         self.setTable()
 
         self.tabla.bind("<ButtonRelease-1>", self.buscar)
 
-        tk.Button(self, text="<-", command=lambda: retroceder(self.tabla), width=5, pady=10).grid(row=7, column=1, pady=20)
-        tk.Button(self, text="<<-", command=lambda: retrocederTodo(self.tabla), width=5, pady=10).grid(row=7, column=2, pady=20)
-        tk.Button(self, text="->>", command=lambda: avanzarTodo(self.tabla), width=5, pady=10).grid(row=7, column=3, pady=20)
-        tk.Button(self, text="->", command=lambda: avanzar(self.tabla), width=5, pady=10).grid(row=7, column=4, pady=20)
+        tk.Button(self, text="<-", command=lambda: retroceder(self.tabla), width=5, pady=10).grid(row=8, column=1, pady=15)
+        tk.Button(self, text="<<-", command=lambda: retrocederTodo(self.tabla), width=5, pady=10).grid(row=8, column=2, pady=15)
+        tk.Button(self, text="->>", command=lambda: avanzarTodo(self.tabla), width=5, pady=10).grid(row=8, column=3, pady=15)
+        tk.Button(self, text="->", command=lambda: avanzar(self.tabla), width=5, pady=10).grid(row=8, column=4, pady=15)
     
     def agregar(self):
         id = self.id_cliente.get() ###
@@ -157,6 +179,7 @@ class ClientesForm(tk.Frame):
         self.ciudad.set("")
         self.nacimiento.set("")
         self.ingreso.set("")
+        self.id.set("")
 
     def setTable(self):
         clientes = getClientes()
@@ -165,3 +188,25 @@ class ClientesForm(tk.Frame):
         for c in clientes:
             row = (c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7], c[8], c[9])
             self.tabla.insert("", "end", values=row)
+
+    def encontrar(self):
+        clientes = getClientes()
+        id = self.id.get()
+        if not id:
+            messagebox.showinfo("Error", "Campo Vacio")
+            return False
+        for c in clientes:
+            if c[0] == int(id):
+                self.identificacion.set(c[1])
+                self.nombres.set(c[2])
+                self.apellidos.set(c[3])
+                self.nit.set(c[4])
+                self.direccion.set(c[5])
+                self.telefono.set(c[6])
+                self.ciudad.set(c[7])
+                self.nacimiento.set(c[8])
+                self.ingreso.set(c[9])
+                messagebox.showinfo("Success", "El Cliente fue encontrado exitosamente")
+                return True
+        messagebox.showinfo("Error", "El Cliente no fue encontrado")
+        return False

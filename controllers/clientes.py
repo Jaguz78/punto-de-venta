@@ -8,6 +8,18 @@ def getClientes():
     registros = cursor.fetchall()
     return registros
 
+def getIdentificaciones():
+    cursor = conexion.cursor()
+    cursor.execute('SELECT id, identificacion FROM identificaciones')
+    registros = cursor.fetchall()
+    return registros
+
+def getCiudades():
+    cursor = conexion.cursor()
+    cursor.execute('SELECT id, ciudad FROM ciudades')
+    registros = cursor.fetchall()
+    return registros
+
 def agregar_cliente(nombres, apellidos, direccion, telefono, ciudad, identificacion, nacimiento, ingreso, nit):
     cursor = conexion.cursor()
     cursor.execute("INSERT INTO clientes (nombres, apellidos, dirección, telefono, id_ciudad, id_identificacion, fecha_nac, fecha_ingreso, nit) VALUES (?,?,?,?,?,?,?,?,?)",\

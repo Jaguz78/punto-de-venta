@@ -10,7 +10,13 @@ def getFacturas():
 
 def getDetalle_Factura():
     cursor = conexion.cursor()
-    cursor.execute('SELECT p.nombre, f.id, f.fecha, c.nombres, u.nombres, f.total from detalle_facturas df INNER JOIN productos p ON df.id_producto = p.id INNER JOIN facturas f ON df.id_factura = f.id INNER JOIN clientes c ON f.id_cliente = c.id INNER JOIN usuarios u ON f.id_usuario = u.id')
+    cursor.execute('SELECT f.id, f.fecha, c.nombres, u.nombres, f.total, p.nombre  FROM detalle_facturas df INNER JOIN productos p ON df.id_producto = p.id INNER JOIN facturas f ON df.id_factura = f.id INNER JOIN clientes c ON f.id_cliente = c.id INNER JOIN usuarios u ON f.id_usuario = u.id')
+    registros = cursor.fetchall()
+    return registros
+
+def getProductos_Factura(id):
+    cursor = conexion.cursor()
+    cursor.execute('SELECT p.nombre, df.cantidad FROM detalle_facturas df INNER JOIN productos p ON df.id_producto = p.id WHERE df.id_factura = ?', id)
     registros = cursor.fetchall()
     return registros
 

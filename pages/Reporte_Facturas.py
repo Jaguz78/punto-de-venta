@@ -8,7 +8,7 @@ from tkinter import filedialog
 from fpdf import FPDF
 from controllers.clientes import getClientes
 from controllers.productos import getProductos
-from controllers.facturas import getFacturas, getDetalle_Factura
+from controllers.facturas import getFacturas, getDetalle_Factura, getProductos_Factura
 
 class ReporteFacturasForm(tk.Frame):
     def __init__(self, master, userSession):
@@ -24,9 +24,6 @@ class ReporteFacturasForm(tk.Frame):
         self.filtrar = tk.StringVar()
         self.primera = tk.StringVar()
         self.segunda = tk.StringVar()
-
-        self.frame1 = tk.Frame(self)
-        self.frame1.grid(row=0, column=0, padx=10, pady=10)
 
         self.crear_vista()
 
@@ -45,6 +42,9 @@ class ReporteFacturasForm(tk.Frame):
         return nombres_productos
 
     def crear_vista(self):
+        self.frame1 = tk.Frame(self)
+        self.frame1.grid(row=0, column=0, padx=10, pady=10)
+
         tk.Label(self.frame1, text="Filtrar:").grid(row=0, column=0, sticky="e", pady=10)
         tk.OptionMenu(self.frame1, self.filtrar, "Cliente", "Producto", "Fecha").grid(row=0, column=1, padx=(10,20), pady=10)
 
@@ -100,9 +100,9 @@ class ReporteFacturasForm(tk.Frame):
                     self.tabla.insert("", "end", values=row)
         elif self.filtrar.get() == 'Producto':
             producto = self.producto.get()
-            for p in detalle_facturas:
-                if p[0] == producto:
-                    row = (p[1], p[2], p[3], p[4], p[5])
+            for f in detalle_facturas:
+                if f[5] == producto:
+                    row = (f[0], f[1], f[2], f[3], f[4])
                     self.tabla.insert("", "end", values=row)
         elif self.filtrar.get() == 'Fecha':
             primera = datetime.strptime(self.primera.get(), "%d/%m/%Y").date()
@@ -113,58 +113,61 @@ class ReporteFacturasForm(tk.Frame):
                     self.tabla.insert("", "end", values=row)
 
     def pdf(self):
-        self.pdf = FPDF()
-        facturas = getFacturas()
-        for f in facturas:
+        file_path = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF Files", "*.pdf")])
+        if file_path:
+            pdf = FPDF()
+            facturas = getFacturas()
+            detalle_facturas = getDetalle_Factura()
             if self.filtrar.get() == 'Cliente':
                 cliente = self.cliente.get()
-                if f['cliente'] == cliente:
-                    self.generar_pdf(f)
+                for f in facturas:
+                    if f[2] == cliente:
+                        self.generar_pdf(pdf, f)
             elif self.filtrar.get() == 'Producto':
                 producto = self.producto.get()
-                for p in f['productos']:
-                    if p[0] == producto:
-                        self.generar_pdf(f)
+                for f in detalle_facturas:
+                    if f[5] == producto:
+                        self.generar_pdf(pdf, f)
             elif self.filtrar.get() == 'Fecha':
                 primera = datetime.strptime(self.primera.get(), "%d/%m/%Y").date()
                 segunda = datetime.strptime(self.segunda.get(), "%d/%m/%Y").date()
-                if datetime.strptime(f['fecha'], "%d/%m/%Y").date() > primera and datetime.strptime(f['fecha'], "%d/%m/%Y").date() < segunda:
-                    self.generar_pdf(f)
+                for f in facturas:
+                    if f[1] > primera and f[1] < segunda:
+                        self.generar_pdf(pdf, f)
         
-        self.file_path = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF Files", "*.pdf")])
-        if self.file_path:
-            self.pdf.output(self.file_path)
-        messagebox.showinfo("Mensaje", "Reporte PDF generado")
+        pdf.output(file_path)
+        messagebox.showinfo("Success", "Reporte PDF generado")
         self.limpiar()
 
-    def generar_pdf(self, f):
-        self.pdf.add_page()
-        self.pdf.set_font("Arial", "B", 14)
-        self.pdf.cell(0, 10, "Reporte de Factura", 0, 1, "L")
-        self.pdf.set_font("Arial", "B", 12)
-        self.pdf.cell(0, 10, "Id Factura: "+str(f['id']), 0, 1, "L")
-        self.pdf.cell(0, 10, "Fecha: "+f['fecha'], 0, 1, "L")
-        self.pdf.cell(0, 10, "Cliente: "+f['cliente'], 0, 1, "L")
-        self.pdf.ln(5)
+    def generar_pdf(self, pdf, f):
+        productos = getProductos_Factura(f[0])
+        pdf.add_page()
+        pdf.set_font("Arial", "B", 14)
+        pdf.cell(0, 10, "Reporte de Factura", 0, 1, "L")
+        pdf.set_font("Arial", "B", 12)
+        pdf.cell(0, 10, "Id Factura: "+str(f[0]), 0, 1, "L")
+        pdf.cell(0, 10, "Fecha: "+str(f[1]), 0, 1, "L")
+        pdf.cell(0, 10, "Cliente: "+str(f[2]), 0, 1, "L")
+        pdf.cell(0, 10, "Usuario: "+str(f[3]), 0, 1, "L")
+        pdf.ln(5)
 
-        col_width = self.pdf.w / 3.5
-        row_height = self.pdf.font_size * 2
-        self.pdf.set_x((self.pdf.w - col_width * 2) / 2)
-        self.pdf.cell(col_width, row_height, "Producto", border=1)
-        self.pdf.cell(col_width, row_height, "Cantidad", border=1, ln=True)
+        col_width = pdf.w / 3.5
+        row_height = pdf.font_size * 2
+        pdf.set_x((pdf.w - col_width * 2) / 2)
+        pdf.cell(col_width, row_height, "Producto", border=1)
+        pdf.cell(col_width, row_height, "Cantidad", border=1, ln=True)
 
-        for p in f['productos']:
-            self.pdf.set_x((self.pdf.w - col_width * 2) / 2)
-            self.pdf.cell(col_width, row_height, p[0], border=1)
-            self.pdf.cell(col_width, row_height, p[1], border=1, ln=True)
+        for p in productos:
+            pdf.set_x((pdf.w - col_width * 2) / 2)
+            pdf.cell(col_width, row_height, str(p[0]), border=1)
+            pdf.cell(col_width, row_height, str(p[1]), border=1, ln=True)
 
-        self.pdf.ln(5)
-        self.pdf.set_font("Arial", "B", 12)
-        self.pdf.cell(0, 10, "Total: Q"+str(f['total']), 0, 0, "L")
+        pdf.ln(5)
+        pdf.set_font("Arial", "B", 12)
+        pdf.cell(0, 10, "Total: Q"+str(f[4]), 0, 0, "L")
 
     def limpiar(self):
         self.frame2.destroy()
-        self.frame1 = tk.Frame(self)
-        self.frame1.grid(row=1, column=0, padx=10, pady=10)
+        self.filtrar.set("")
         self.crear_vista()
         
