@@ -75,8 +75,9 @@ class ProductosForm(tk.Frame):
         precio = self.precio.get()
         iva = self.iva.get()
         nota = self.nota.get()
+        idIva = buscar_idIva(iva)
         if v_enguardar(nombre, precio, iva, nota):
-            agregar_producto(nombre, precio, iva, nota)
+            agregar_producto(nombre, precio, idIva[0][0], nota)
             self.setTable()
 
     def buscar(self, event):
@@ -95,13 +96,14 @@ class ProductosForm(tk.Frame):
         precio = self.precio.get()
         iva = self.iva.get()
         nota = self.nota.get()
-        if v_eneditar(nombre, precio, iva, nota):
-            editar_producto(id, nombre, precio, iva, nota)
+        idIva = buscar_idIva(iva)
+        if v_eneditar(id, nombre, precio, iva, nota):
+            editar_producto(id, nombre, precio, idIva[0][0], nota)
             self.setTable()
 
     def eliminar(self):
         id = self.id_producto.get() ###
-        if v_eneliminar(id):
+        if v_eneliminar(int(id)):
             eliminar_producto(id)
             self.setTable()
 

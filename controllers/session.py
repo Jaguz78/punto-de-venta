@@ -19,10 +19,10 @@ class UserSession:
     def login(self, username, password):
         users = getUsers()
         for user in users:
-            if user['id'] == username and user['password'] == password:
+            if user[0] == username and user[6] == password:
                 self.username = username
                 self.password = password
-                self.role = user['role']
+                self.role = user[3]
                 self.logged_in = True
                 success = {"success": "Login exitoso"}
                 return success
@@ -51,10 +51,9 @@ class UserSession:
         if 'error' not in user:
             if newPass == confirmNewPass:
                 for u in users:
-                    if u['id'] == id:
-                        u['password'] = newPass
-                        with open(ARCH_USERS, 'w') as archive:
-                            json.dump(users, archive, indent=4)
+                    if u[0] == id:
+                        u[4] = newPass
+                        changePass(id, newPass)
                         response = {"success": "Contraseña cambiada exitosamente"}
                         return response
             else:

@@ -17,7 +17,7 @@ def getIva():
 def agregar_producto(nombre, precio, iva, nota):
     cursor = conexion.cursor()
     cursor.execute("INSERT INTO productos (nombre, id_iva, nota, precio) VALUES (?,?,?,?)",\
-        nombre, precio, iva, nota)
+        nombre, iva, nota, precio)
     conexion.commit()
     cursor.close()
 
@@ -32,4 +32,10 @@ def eliminar_producto(id):
     cursor = conexion.cursor()
     cursor.execute("DELETE FROM productos WHERE id=?", id)
     conexion.commit()
-    cursor.close() 
+    cursor.close()
+
+def buscar_idIva(name):
+    cursor = conexion.cursor()
+    cursor.execute("SELECT id FROM iva WHERE porcentaje=?", name)
+    id = cursor.fetchall()
+    return id

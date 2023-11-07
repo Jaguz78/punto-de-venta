@@ -14,20 +14,17 @@ def getDetalle_Factura():
     registros = cursor.fetchall()
     return registros
 
-def createFactura(fecha, cliente, session, productos):
+def createFactura(fecha, cliente, username, productos, total):
     cursor = conexion.cursor()
     c = cursor.execute("SELECT id FROM clientes WHERE nombres = ?", cliente)
-    conexion.commit()
     row = c.fetchone()
     if row:
         idClient = row[0]
     else:
         idClient = None
-    cursor.execute("INSERT INTO facturas (fecha, id_cliente, id_usuario) VALUES (?,?,?)",\
-        fecha, idClient, session.username)
-    conexion.commit()
-    cursor.execute("SELECT SCOPE_IDENTITY() AS new_id")
-    conexion.commit()
+    cursor.execute("INSERT INTO facturas (fecha, id_cliente, id_usuario, total) VALUES (?,?,?,?)",\
+        fecha, idClient, username, total)
+    cursor.execute("SELECT @@IDENTITY AS new_id")
     row = cursor.fetchone()
     if row:
         new_id = row.new_id

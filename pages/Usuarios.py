@@ -95,8 +95,9 @@ class UsuariosForm(tk.Frame):
         perfil = self.perfil.get()
         direccion = self.direccion.get()
         telefono = self.telefono.get()
+        idPerfil = buscar_idPerfil(perfil)
         if v_eneditar(id, name, lastname, perfil, password, direccion, telefono):
-            editUser(id, name, lastname, perfil, password, direccion, telefono)
+            editUser(id, name, lastname, idPerfil[0][0], password, direccion, telefono)
             self.setTable()
 
     def save_user(self):
@@ -108,8 +109,9 @@ class UsuariosForm(tk.Frame):
         perfil = self.perfil.get()
         direccion = self.direccion.get()
         telefono = self.telefono.get()
+        idPerfil = buscar_idPerfil(perfil)
         if v_enguardar(id, name, lastname, perfil, password, confirm, direccion, telefono):
-            createUser(id, name, lastname, perfil, password, direccion, telefono)
+            createUser(id, name, lastname, idPerfil[0][0], password, direccion, telefono)
             self.setTable()
             
     def delete_user(self):

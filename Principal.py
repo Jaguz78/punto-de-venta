@@ -86,15 +86,15 @@ class App:
         menu_archivo.add_separator()
         menu_archivo.add_command(label="Cambio Clave", command=lambda: self.mostrar_contenido(CambioClaveForm))
         menu_archivo.add_command(label="Cambio Usuario", command=self.cambio_usuario)
-        #if self.userSession.get_role() == 'admin':
-        menu_archivo.add_command(label="Usuarios", command=lambda: self.mostrar_contenido(UsuariosForm))
-        menu_archivo.add_separator()
-        menu_archivo.add_command(label="Salir", command=ventana.quit)
+        if self.userSession.get_role() == 'admin':
+            menu_archivo.add_command(label="Usuarios", command=lambda: self.mostrar_contenido(UsuariosForm))
+            menu_archivo.add_separator()
+            menu_archivo.add_command(label="Salir", command=ventana.quit)
 
         menu_movimientos = tk.Menu(menu_principal, tearoff=0)
         menu_movimientos.add_command(label="Nueva Factura", command=lambda: self.mostrar_contenido(NuevaFacturaForm))
-        #if self.userSession.get_role() == 'admin':
-        menu_movimientos.add_command(label="Reporte Facturas", command=lambda: self.mostrar_contenido(ReporteFacturasForm))
+        if self.userSession.get_role() == 'admin':
+            menu_movimientos.add_command(label="Reporte Facturas", command=lambda: self.mostrar_contenido(ReporteFacturasForm))
 
         menu_ayuda = tk.Menu(menu_principal, tearoff=0)
         menu_ayuda.add_command(label="Acerca de", command=lambda: self.mostrar_contenido(AyudaForm))
@@ -123,6 +123,6 @@ class App:
 if __name__ == "__main__":
     userSession = UserSession()
     ventana = tk.Tk()
-    #login = LoginWindow(ventana, userSession)
+    login = LoginWindow(ventana, userSession)
     app = App(ventana, userSession)
     ventana.mainloop()

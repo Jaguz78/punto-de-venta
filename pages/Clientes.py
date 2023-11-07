@@ -102,15 +102,17 @@ class ClientesForm(tk.Frame):
         ciudad = self.ciudad.get()
         nacimiento = self.nacimiento.get()
         ingreso = self.ingreso.get()
+        idCiudad = buscar_idCiudad(ciudad)
+        idIdentificacion = buscar_idIdentificacion(identificacion)
         if v_enguardar(identificacion, nombres, apellidos, nit, direccion, telefono, ciudad, nacimiento, ingreso):
-            agregar_cliente(nombres, apellidos, direccion, telefono, ciudad, identificacion, nacimiento, ingreso, nit)
+            agregar_cliente(nombres, apellidos, direccion, telefono, idCiudad[0][0], idIdentificacion[0][0], nacimiento, ingreso, nit)
             self.setTable()
 
     def buscar(self, event):
         item = self.tabla.selection()[0]
         values = self.tabla.item(item, "values")
         if values:
-            #self.id_cliente.set(values[0]) ###
+            self.id_cliente.set(values[0]) ###
             self.identificacion.set(values[1])
             self.nombres.set(values[2])
             self.apellidos.set(values[3])
@@ -132,13 +134,15 @@ class ClientesForm(tk.Frame):
         ciudad = self.ciudad.get()
         nacimiento = self.nacimiento.get()
         ingreso = self.ingreso.get()
+        idCiudad = buscar_idCiudad(ciudad)
+        idIdentificacion = buscar_idIdentificacion(identificacion)
         if v_eneditar(identificacion, nombres, apellidos, nit, direccion, telefono, ciudad, nacimiento, ingreso):
-            editar_cliente(nombres, apellidos, direccion, telefono, ciudad, identificacion, nacimiento, ingreso, nit, id)
+            editar_cliente(nombres, apellidos, direccion, telefono, idCiudad[0][0], idIdentificacion[0][0], nacimiento, ingreso, nit, id)
             self.setTable()
 
     def eliminar(self):
         id = self.id_cliente.get() ###
-        if v_eneliminar(id):
+        if v_eneliminar(int(id)):
             eliminar_cliente(id)
             self.setTable()
 

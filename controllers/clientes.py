@@ -17,7 +17,7 @@ def agregar_cliente(nombres, apellidos, direccion, telefono, ciudad, identificac
 
 def editar_cliente(nombres, apellidos, direccion, telefono, ciudad, identificacion, nacimiento, ingreso, nit, id):
     cursor = conexion.cursor()
-    cursor.execute("UPDATE clientes SET nombres=?, apellidos=?, dirección=?, telefono=?, id_cuidad=?, id_identificacion=?, fecha_nac=?, fecha_ingreso=?, nit=? WHERE id=?",\
+    cursor.execute("UPDATE clientes SET nombres=?, apellidos=?, dirección=?, telefono=?, id_ciudad=?, id_identificacion=?, fecha_nac=?, fecha_ingreso=?, nit=? WHERE id=?",\
         nombres, apellidos, direccion, telefono, ciudad, identificacion, nacimiento, ingreso, nit, id)
     conexion.commit()
     cursor.close()
@@ -27,3 +27,15 @@ def eliminar_cliente(id):
     cursor.execute("DELETE FROM clientes WHERE id=?", id)
     conexion.commit()
     cursor.close()
+
+def buscar_idCiudad(name):
+    cursor = conexion.cursor()
+    cursor.execute("SELECT id FROM ciudades WHERE ciudad=?", name)
+    id = cursor.fetchall()
+    return id
+
+def buscar_idIdentificacion(name):
+    cursor = conexion.cursor()
+    cursor.execute("SELECT id FROM identificaciones WHERE identificacion=?", name)
+    id = cursor.fetchall()
+    return id

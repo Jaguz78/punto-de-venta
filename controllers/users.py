@@ -26,4 +26,17 @@ def editUser(id, name, lastname, perfil, password, direccion, telefono):
     cursor.execute("UPDATE usuarios SET nombres=?, apellidos=?, id_perfil=?, clave=?, direccion=?, telefono=? WHERE id=?",\
         name, lastname, perfil, password, direccion, telefono, id)
     conexion.commit()
-    cursor.close()    
+    cursor.close()  
+
+def buscar_idPerfil(name):
+    cursor = conexion.cursor()
+    cursor.execute("SELECT id FROM perfiles WHERE perfil=?", name)
+    id = cursor.fetchall()
+    return id
+
+def changePass(id, newpass):
+    cursor = conexion.cursor()
+    cursor.execute("UPDATE usuarios SET clave=? WHERE id=?",\
+        newpass, id)
+    conexion.commit()
+    cursor.close()

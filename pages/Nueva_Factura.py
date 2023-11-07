@@ -90,8 +90,8 @@ class NuevaFacturaForm(tk.Frame):
         productos = getProductos()
         if v_enagregarp(producto, cantidad):
             for p in productos:
-                if p['nombre'] == producto:
-                    row = (p['id'], p['nombre'], p['precio'], cantidad, float(p['precio']) * int(cantidad))
+                if p[1] == producto:
+                    row = (p[0], p[1], p[2], cantidad, float(p[2]) * int(cantidad))
                     self.tabla.insert("", "end", values=row)
                     self.updateTotal()
 
@@ -122,12 +122,12 @@ class NuevaFacturaForm(tk.Frame):
             for item in self.tabla.get_children():
                 values = self.tabla.item(item, "values")
                 if values:
-                    data_table.append([values[1], values[3]]) 
+                    data_table.append([values[0], values[3], values[4]]) 
             total = 0
             for item in self.tabla.get_children():
                 values = self.tabla.item(item, "values")
                 total += float(values[4])
-            createFactura(fecha, cliente, data_table, total)
+            createFactura(fecha, cliente, self.userSession.username, data_table, total)
             self.limpiar()
 
     def updateTotal(self):
