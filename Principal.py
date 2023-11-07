@@ -73,7 +73,7 @@ class App:
         self.ventana = ventana
         self.userSession = userSession
         self.ventana.title("SISTEMA DE FACTURACIÓN")
-        self.ventana.geometry("1000x600")
+        self.ventana.geometry("1000x650")
 
         self.frame1 = tk.Frame(ventana, bg="#3498db")
         self.frame1.pack(side=tk.TOP, fill=tk.X)

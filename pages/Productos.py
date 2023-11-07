@@ -17,6 +17,7 @@ class ProductosForm(tk.Frame):
         self.precio = tk.StringVar()
         self.iva = tk.StringVar()
         self.nota = tk.StringVar()
+        self.id = tk.StringVar()
         
         self.ivas = self.fillIva()
 
@@ -30,22 +31,26 @@ class ProductosForm(tk.Frame):
         return porcentajes
 
     def crear_vista(self):
-        tk.Label(self, text="Nombre:").grid(row=0, column=0, sticky="e", pady=10)
-        tk.Entry(self, textvariable=self.nombre, width=30).grid(row=0, column=1, padx=(10,20), pady=10)
+        tk.Label(self, text="Id a buscar:").grid(row=0, column=0, sticky="e", pady=20) 
+        tk.Entry(self, textvariable=self.id, width=30).grid(row=0, column=1, padx=(10,20), pady=20)
+        tk.Button(self, text="Buscar", command=self.encontrar).grid(row=0, column=2, pady=20)
 
-        tk.Label(self, text="Precio:").grid(row=0, column=2, sticky="e", pady=10)
-        tk.Entry(self, textvariable=self.precio, width=30).grid(row=0, column=3, padx=(10,20), pady=10)
+        tk.Label(self, text="Nombre:").grid(row=1, column=0, sticky="e", pady=8)
+        tk.Entry(self, textvariable=self.nombre, width=30).grid(row=1, column=1, padx=(10,20), pady=8)
 
-        tk.Label(self, text="Nota:").grid(row=1, column=0, sticky="e", pady=10)
-        tk.Entry(self, textvariable=self.nota, width=30).grid(row=1, column=1, padx=(10,20), pady=10)
+        tk.Label(self, text="Precio:").grid(row=1, column=2, sticky="e", pady=8)
+        tk.Entry(self, textvariable=self.precio, width=30).grid(row=1, column=3, padx=(10,20), pady=8)
 
-        tk.Label(self, text="IVA:").grid(row=1, column=2, sticky="e", pady=10)
-        tk.OptionMenu(self, self.iva, *self.ivas).grid(row=1, column=3, padx=(10,20), pady=10)
+        tk.Label(self, text="Nota:").grid(row=2, column=0, sticky="e", pady=8)
+        tk.Entry(self, textvariable=self.nota, width=30).grid(row=2, column=1, padx=(10,20), pady=8)
 
-        tk.Button(self, text="Agregar", command=self.agregar).grid(row=2, column=0, pady=10)
-        tk.Button(self, text="Editar", command=self.editar).grid(row=2, column=1, pady=10)
-        tk.Button(self, text="Eliminar", command=self.eliminar).grid(row=2, column=2, pady=10)
-        tk.Button(self, text="Limpiar", command=self.limpiar).grid(row=2, column=3, pady=10)
+        tk.Label(self, text="IVA:").grid(row=2, column=2, sticky="e", pady=8)
+        tk.OptionMenu(self, self.iva, *self.ivas).grid(row=2, column=3, padx=(10,20), pady=8)
+
+        tk.Button(self, text="Agregar", command=self.agregar).grid(row=3, column=0, pady=8)
+        tk.Button(self, text="Editar", command=self.editar).grid(row=3, column=1, pady=8)
+        tk.Button(self, text="Eliminar", command=self.eliminar).grid(row=3, column=2, pady=8)
+        tk.Button(self, text="Limpiar", command=self.limpiar).grid(row=3, column=3, pady=8)
 
         self.tabla = ttk.Treeview(self, columns=("Id Producto", "Nombre", "Precio", "IVA", "Nota"), show="headings")
         self.tabla.heading("#1", text="Id Producto")
@@ -58,14 +63,14 @@ class ProductosForm(tk.Frame):
         self.tabla.column("#3", width=80, anchor="center")
         self.tabla.column("#4", width=80, anchor="center")
         self.tabla.column("#5", width=150, anchor="center")
-        self.tabla.grid(row=3, columnspan=5, pady=10)
+        self.tabla.grid(row=4, columnspan=5, pady=8)
 
         self.setTable() 
 
-        tk.Button(self, text="<-", command=lambda: retroceder(self.tabla), width=5, pady=10).grid(row=4, column=0, pady=20)
-        tk.Button(self, text="<<-", command=lambda: retrocederTodo(self.tabla), width=5, pady=10).grid(row=4, column=1, pady=20)
-        tk.Button(self, text="->>", command=lambda: avanzarTodo(self.tabla), width=5, pady=10).grid(row=4, column=2, pady=20)
-        tk.Button(self, text="->", command=lambda: avanzar(self.tabla), width=5, pady=10).grid(row=4, column=3, pady=20)
+        tk.Button(self, text="<-", command=lambda: retroceder(self.tabla), width=5, pady=10).grid(row=5, column=0, pady=15)
+        tk.Button(self, text="<<-", command=lambda: retrocederTodo(self.tabla), width=5, pady=10).grid(row=5, column=1, pady=15)
+        tk.Button(self, text="->>", command=lambda: avanzarTodo(self.tabla), width=5, pady=10).grid(row=5, column=2, pady=15)
+        tk.Button(self, text="->", command=lambda: avanzar(self.tabla), width=5, pady=10).grid(row=5, column=3, pady=15)
 
         self.tabla.bind("<ButtonRelease-1>", self.buscar)
     
@@ -111,6 +116,7 @@ class ProductosForm(tk.Frame):
         self.precio.set("")
         self.iva.set("")
         self.nota.set("")
+        self.id.set("")
 
     def setTable(self):
         productos = getProductos()
@@ -119,3 +125,21 @@ class ProductosForm(tk.Frame):
         for p in productos:
             row = (p[0], p[1], p[2], p[3], p[4])
             self.tabla.insert("", "end", values=row)
+    
+    def encontrar(self):
+        productos = getProductos()
+        id = self.id.get()
+        if not id:
+            messagebox.showinfo("Error", "Campo Vacio")
+            return False
+        for p in productos:
+            if p[0] == int(id):
+                self.nombre.set(p[1])
+                self.precio.set(p[2])
+                self.iva.set(p[3])
+                self.nota.set(p[4])
+                messagebox.showinfo("Success", "El Producto fue encontrado exitosamente")
+                return True
+        messagebox.showinfo("Error", "El Producto no fue encontrado")
+        return False
+                
