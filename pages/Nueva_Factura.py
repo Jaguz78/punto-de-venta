@@ -31,14 +31,14 @@ class NuevaFacturaForm(tk.Frame):
         clientes = getClientes()
         nombres_clientes = []
         for c in clientes:
-            nombres_clientes.append(c['nombres'])
+            nombres_clientes.append(c[2])
         return nombres_clientes
 
     def fillProductos(self):
         products = getProductos()
         nombres_productos = []
         for c in products:
-            nombres_productos.append(c['nombre'])
+            nombres_productos.append(c[1])
         return nombres_productos
     
     def crear_vista(self):

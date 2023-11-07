@@ -6,8 +6,8 @@ def v_enguardar(identificacion, nombres, apellidos, nit, direccion, telefono, ci
     if not identificacion or not nombres or not apellidos or not nit or not direccion or not telefono or not ciudad or not nacimiento or not ingreso:
         messagebox.showinfo("Error", "Campos vacios")
         return False
-    for c in clientes:
-        if c['nit'] == nit:
+    for c in clientes: 
+        if c[4] == nit:
             messagebox.showinfo("Error", "Nit ya registrado")
             return False
     messagebox.showinfo("Success", "El Cliente fue agregado exitosamente")
@@ -26,7 +26,7 @@ def v_eneliminar(id):
         messagebox.showinfo("Error", "Ingrese Id")
         return False
     for c in clientes:
-        if c['id'] == id:
+        if c[0] == id:
             messagebox.showinfo("Success", "El Cliente fue eliminado exitosamente")
             return True
     messagebox.showinfo("Error", "El Cliente no fue encontrado")

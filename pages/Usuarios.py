@@ -43,10 +43,10 @@ class UsuariosForm(tk.Frame):
         tk.Entry(self, textvariable=self.confirmacion_clave, show="*", width=30).grid(row=2, column=3, padx=(10, 20), pady=10)
 
         tk.Label(self, text="Dirección:").grid(row=3, column=0, pady=10)
-        tk.Entry(self, textvariable=self.nombres, width=30).grid(row=3, column=1, padx=(10,20), pady=10)
+        tk.Entry(self, textvariable=self.direccion, width=30).grid(row=3, column=1, padx=(10,20), pady=10)
 
         tk.Label(self, text="Telefono:").grid(row=3, column=2, pady=10)
-        tk.Entry(self, textvariable=self.apellidos, width=30).grid(row=3, column=3, padx=(10, 20), pady=10)
+        tk.Entry(self, textvariable=self.telefono, width=30).grid(row=3, column=3, padx=(10, 20), pady=10)
 
         tk.Button(self, text="Guardar", command=self.save_user).grid(row=4, column=1, pady=10)
         tk.Button(self, text="Borrar", command=self.delete_user).grid(row=4, column=2, pady=10)
@@ -122,14 +122,17 @@ class UsuariosForm(tk.Frame):
         users = getUsers()
         self.user_table.delete(*self.user_table.get_children())
         for u in users:
-            row = (u['id'], u['name'], u['lastname'], u['role'])
+            row = (u[0], u[1], u[2], u[3], u[4], u[5])
             self.user_table.insert("", "end", values=row)
 
     def search_user(self, event):
         item = self.user_table.selection()[0]
         values = self.user_table.item(item, "values")
+        print(values)
         if values:
             self.id_usuario.set(values[0])
             self.nombres.set(values[1])
             self.apellidos.set(values[2])
             self.perfil.set(values[3])
+            self.direccion.set(values[4])
+            self.telefono.set(values[5])

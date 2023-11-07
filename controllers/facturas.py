@@ -4,8 +4,15 @@ conexion = establecer_conexion()
 
 def getFacturas():
     cursor = conexion.cursor()
-    cursor.execute('SELECT * FROM facturas')
-    return cursor
+    cursor.execute('SELECT f.id, f.fecha, c.nombres, u.nombres, f.total FROM facturas f INNER JOIN clientes c ON f.id_cliente = c.id INNER JOIN usuarios u ON f.id_usuario = u.id')
+    registros = cursor.fetchall()
+    return registros
+
+def getDetalle_Factura():
+    cursor = conexion.cursor()
+    cursor.execute('SELECT p.nombre, f.id, f.fecha, c.nombres, u.nombres, f.total from detalle_facturas df INNER JOIN productos p ON df.id_producto = p.id INNER JOIN facturas f ON df.id_factura = f.id INNER JOIN clientes c ON f.id_cliente = c.id INNER JOIN usuarios u ON f.id_usuario = u.id')
+    registros = cursor.fetchall()
+    return registros
 
 def createFactura(fecha, cliente, session, productos):
     cursor = conexion.cursor()

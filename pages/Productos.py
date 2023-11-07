@@ -18,8 +18,17 @@ class ProductosForm(tk.Frame):
         self.iva = tk.StringVar()
         self.nota = tk.StringVar()
         
+        self.ivas = self.fillIva()
+
         self.crear_vista()
     
+    def fillIva(self):
+        iva = getIva()
+        porcentajes = []
+        for i in iva:
+            porcentajes.append(i[1])
+        return porcentajes
+
     def crear_vista(self):
         tk.Label(self, text="Nombre:").grid(row=0, column=0, sticky="e", pady=10)
         tk.Entry(self, textvariable=self.nombre, width=30).grid(row=0, column=1, padx=(10,20), pady=10)
@@ -31,7 +40,7 @@ class ProductosForm(tk.Frame):
         tk.Entry(self, textvariable=self.nota, width=30).grid(row=1, column=1, padx=(10,20), pady=10)
 
         tk.Label(self, text="IVA:").grid(row=1, column=2, sticky="e", pady=10)
-        tk.OptionMenu(self, self.iva, "5%", "12%").grid(row=1, column=3, padx=(10,20), pady=10)
+        tk.OptionMenu(self, self.iva, *self.ivas).grid(row=1, column=3, padx=(10,20), pady=10)
 
         tk.Button(self, text="Agregar", command=self.agregar).grid(row=2, column=0, pady=10)
         tk.Button(self, text="Editar", command=self.editar).grid(row=2, column=1, pady=10)
@@ -108,5 +117,5 @@ class ProductosForm(tk.Frame):
         for p in self.tabla.get_children():
             self.tabla.delete(p)
         for p in productos:
-            row = (p['id'], p['nombre'], p['precio'], p['iva'], p['nota'])
+            row = (p[0], p[1], p[2], p[3], p[4])
             self.tabla.insert("", "end", values=row)

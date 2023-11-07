@@ -4,8 +4,9 @@ conexion = establecer_conexion()
 
 def getUsers():
     cursor = conexion.cursor()
-    cursor.execute('SELECT * FROM productos')
-    return cursor
+    cursor.execute('SELECT u.id, u.nombres, u.apellidos, p.perfil, u.direccion, u.telefono, u.clave FROM usuarios u INNER JOIN perfiles p ON u.id_perfil = p.id')
+    registros = cursor.fetchall()
+    return registros
 
 def createUser(id, name, lastname, perfil, password, direccion, telefono):
     cursor = conexion.cursor()

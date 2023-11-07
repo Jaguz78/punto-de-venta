@@ -4,8 +4,15 @@ conexion = establecer_conexion()
 
 def getProductos():
     cursor = conexion.cursor()
-    cursor.execute('SELECT * FROM productos')
-    return cursor
+    cursor.execute('SELECT p.id, p.nombre, p.precio, i.porcentaje, p.nota FROM productos p INNER JOIN iva i ON p.id_iva = i.id')
+    registros = cursor.fetchall()
+    return registros
+
+def getIva():
+    cursor = conexion.cursor()
+    cursor.execute('SELECT id, porcentaje FROM iva')
+    registros = cursor.fetchall()
+    return registros
 
 def agregar_producto(nombre, precio, iva, nota):
     cursor = conexion.cursor()

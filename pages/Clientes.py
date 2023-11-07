@@ -110,15 +110,16 @@ class ClientesForm(tk.Frame):
         item = self.tabla.selection()[0]
         values = self.tabla.item(item, "values")
         if values:
-            self.id_cliente.set(values[0]) ###
+            #self.id_cliente.set(values[0]) ###
             self.identificacion.set(values[1])
             self.nombres.set(values[2])
             self.apellidos.set(values[3])
-            self.direccion.set(values[4])
-            self.telefono.set(values[5])
-            self.ciudad.set(values[6])
-            self.nacimiento.set(values[7])
-            self.ingreso.set(values[8])
+            self.nit.set(values[4])
+            self.direccion.set(values[5])
+            self.telefono.set(values[6])
+            self.ciudad.set(values[7])
+            self.nacimiento.set(values[8])
+            self.ingreso.set(values[9])
 
     def editar(self):
         id = self.id_cliente.get() ###
@@ -158,5 +159,5 @@ class ClientesForm(tk.Frame):
         for c in self.tabla.get_children():
             self.tabla.delete(c)
         for c in clientes:
-            row = (c['id'], c['identificacion'], c['nombres'], c['apellidos'], c['nit'], c['direccion'], c['telefono'], c['ciudad'], c['nacimiento'], c['ingreso'])
+            row = (c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7], c[8], c[9])
             self.tabla.insert("", "end", values=row)

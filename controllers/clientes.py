@@ -4,8 +4,9 @@ conexion = establecer_conexion()
 
 def getClientes():
     cursor = conexion.cursor()
-    cursor.execute('SELECT * FROM clientes')
-    return cursor
+    cursor.execute('SELECT c.id, i.identificacion, c.nombres, c.apellidos, c.nit, c.dirección, c.telefono, ci.ciudad, c.fecha_nac, c.fecha_ingreso FROM clientes c INNER JOIN ciudades ci ON c.id_ciudad = ci.id INNER JOIN identificaciones i ON c.id_identificacion = i.id')
+    registros = cursor.fetchall()
+    return registros
 
 def agregar_cliente(nombres, apellidos, direccion, telefono, ciudad, identificacion, nacimiento, ingreso, nit):
     cursor = conexion.cursor()

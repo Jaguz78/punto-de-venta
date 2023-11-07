@@ -8,7 +8,7 @@ from tkinter import filedialog
 from fpdf import FPDF
 from controllers.clientes import getClientes
 from controllers.productos import getProductos
-from controllers.facturas import getFacturas
+from controllers.facturas import getFacturas, getDetalle_Factura
 
 class ReporteFacturasForm(tk.Frame):
     def __init__(self, master, userSession):
@@ -34,21 +34,21 @@ class ReporteFacturasForm(tk.Frame):
         clientes = getClientes()
         nombres_clientes = []
         for c in clientes:
-            nombres_clientes.append(c['nombres'])
+            nombres_clientes.append(c[2])
         return nombres_clientes
     
     def fillProductos(self):
         productos = getProductos()
         nombres_productos = []
         for p in productos:
-            nombres_productos.append(p['nombre'])
+            nombres_productos.append(p[1])
         return nombres_productos
 
     def crear_vista(self):
-        tk.Label(self.frame1, text="Filtrar:").grid(row=0, column=0, sticky="e")
-        tk.OptionMenu(self.frame1, self.filtrar, "Cliente", "Producto", "Fecha").grid(row=0, column=1)
+        tk.Label(self.frame1, text="Filtrar:").grid(row=0, column=0, sticky="e", pady=10)
+        tk.OptionMenu(self.frame1, self.filtrar, "Cliente", "Producto", "Fecha").grid(row=0, column=1, padx=(10,20), pady=10)
 
-        tk.Button(self.frame1, text="Filtrar", command=self.filtro).grid(row=0, column=2)
+        tk.Button(self.frame1, text="Filtrar", command=self.filtro).grid(row=0, column=2, pady=10)
 
         tk.Label(self.frame1, text=" ", height=1).grid(row=1)
 
@@ -76,36 +76,40 @@ class ReporteFacturasForm(tk.Frame):
 
         tk.Label(self.frame2, text=" ", height=1).grid(row=5)
 
-        self.tabla = ttk.Treeview(self.frame2, columns=("ID Factura", "Fecha", "Cliente", "Total"), show="headings")
+        self.tabla = ttk.Treeview(self.frame2, columns=("ID Factura", "Fecha", "Cliente", "Usuario", "Total"), show="headings")
         self.tabla.heading("#1", text="Id Factura")
         self.tabla.heading("#2", text="Fecha")
         self.tabla.heading("#3", text="Cliente")
-        self.tabla.heading("#4", text="Total")
+        self.tabla.heading("#4", text="Usuario")
+        self.tabla.heading("#5", text="Total")
         self.tabla.column("#1", width=80, anchor="center")
         self.tabla.column("#2", width=80, anchor="center")
         self.tabla.column("#3", width=80, anchor="center")
         self.tabla.column("#4", width=80, anchor="center")
+        self.tabla.column("#5", width=80, anchor="center")
         self.tabla.grid(row=6, columnspan=5)
 
     def reporte(self):
         facturas = getFacturas()
-        for f in facturas:
-            if self.filtrar.get() == 'Cliente':
-                cliente = self.cliente.get()
-                if f['cliente'] == cliente:
-                    row = (f['id'], f['fecha'], f['cliente'], f['total'])
+        detalle_facturas = getDetalle_Factura()
+        if self.filtrar.get() == 'Cliente':
+            cliente = self.cliente.get()
+            for f in facturas:
+                if f[2] == cliente:
+                    row = (f[0], f[1], f[2], f[3], f[4])
                     self.tabla.insert("", "end", values=row)
-            elif self.filtrar.get() == 'Producto':
-                producto = self.producto.get()
-                for p in f['productos']:
-                    if p[0] == producto:
-                        row = (f['id'], f['fecha'], f['cliente'], f['total'])
-                        self.tabla.insert("", "end", values=row)
-            elif self.filtrar.get() == 'Fecha':
-                primera = datetime.strptime(self.primera.get(), "%d/%m/%Y").date()
-                segunda = datetime.strptime(self.segunda.get(), "%d/%m/%Y").date()
-                if datetime.strptime(f['fecha'], "%d/%m/%Y").date() > primera and datetime.strptime(f['fecha'], "%d/%m/%Y").date() < segunda:
-                    row = (f['id'], f['fecha'], f['cliente'], f['total'])
+        elif self.filtrar.get() == 'Producto':
+            producto = self.producto.get()
+            for p in detalle_facturas:
+                if p[0] == producto:
+                    row = (p[1], p[2], p[3], p[4], p[5])
+                    self.tabla.insert("", "end", values=row)
+        elif self.filtrar.get() == 'Fecha':
+            primera = datetime.strptime(self.primera.get(), "%d/%m/%Y").date()
+            segunda = datetime.strptime(self.segunda.get(), "%d/%m/%Y").date()
+            for f in facturas:
+                if f[1] > primera and f[1] < segunda:
+                    row = (f[0], f[1], f[2], f[3], f[4])
                     self.tabla.insert("", "end", values=row)
 
     def pdf(self):
@@ -131,6 +135,7 @@ class ReporteFacturasForm(tk.Frame):
         if self.file_path:
             self.pdf.output(self.file_path)
         messagebox.showinfo("Mensaje", "Reporte PDF generado")
+        self.limpiar()
 
     def generar_pdf(self, f):
         self.pdf.add_page()

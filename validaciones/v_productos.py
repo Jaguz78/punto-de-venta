@@ -21,7 +21,7 @@ def v_eneliminar(id):
         messagebox.showinfo("Error", "Ingrese Id")
         return False
     for p in productos:
-        if p['id'] == id:
+        if p[0] == id:
             messagebox.showinfo("Success", "El Producto fue eliminado exitosamente")
             return True
     messagebox.showinfo("Error", "El Producto no fue encontrado")

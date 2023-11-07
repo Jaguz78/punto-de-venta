@@ -7,7 +7,7 @@ def v_enguardar(id, name, lastname, perfil, password, confirm, direccion, telefo
         messagebox.showinfo("Error", "Campos vacios")
         return False
     for u in usuarios:
-        if u['id'] == id:
+        if u[0] == id:
             messagebox.showinfo("Error", "Id ya registrado")
             return False
     if password != confirm:
@@ -29,7 +29,7 @@ def v_eneliminar(id):
         messagebox.showinfo("Error", "Ingrese Id")
         return False
     for u in usuarios:
-        if u['id'] == id:
+        if u[0] == id:
             messagebox.showinfo("Success", "El Usuario fue eliminado exitosamente")
             return True
     messagebox.showinfo("Error", "El Usuario no fue encontrado")
